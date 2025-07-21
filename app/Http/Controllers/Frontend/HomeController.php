@@ -28,13 +28,12 @@ class HomeController extends Controller
             $category->posts = $category->posts()->limit(4)->get();
             return $category;
         });
-
         
-
-
         return view(
             'frontend.index',
             compact('posts', 'gretest_posts_views', 'categories_with_posts', 'oldest_news', 'gretest_posts_comments')
         );
     }
+
+
 }
