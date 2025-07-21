@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\RelatedNewsSite;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
@@ -43,11 +44,13 @@ class CheckSettingProvider extends ServiceProvider
         $getSetting->whatsapp = "https://wa.me/".$getSetting->phone;
 
         //share related sites
-
         $related_sites = RelatedNewsSite::select('name','url')->get();
+        //share categories
+        $categories = Category::select('slug','name')->get();
         view()->share([
             'getSetting'=>$getSetting,
             'related_sites'=>$related_sites,
+            'categories'=>$categories,
         ]);
 
 
