@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\RelatedNewsSite;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,7 +21,7 @@ class CheckSettingProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // can use firstorcreate 
+        // can use firstorcreate
         $getSetting = Setting::firstOr(function(){
             return Setting::create([
                 'site_name'=>'news',
@@ -32,19 +33,25 @@ class CheckSettingProvider extends ServiceProvider
                 'insagram'=>'https://www.instagram.com/',
                 'youtupe'=>'https://www.youtupe.com/',
                 'country'=>'Egypt',
-                'city'=>'Alex',
-                'street'=>'Elsharawy',
-                'phone'=>'01222333434',
+                'city'=>'beni suif',
+                'street'=>'elmror',
+                'phone'=>'01113604940',
                 'small_desc'=>'23 of PARAGE is equality of condition, blood, or dignity; specifically : equality between persons (as brothers) one of whom holds a part of a fee ',
             ]);
         });
 
         $getSetting->whatsapp = "https://wa.me/".$getSetting->phone;
 
+        //share related sites
 
+        $related_sites = RelatedNewsSite::select('name','url')->get();
         view()->share([
             'getSetting'=>$getSetting,
+            'related_sites'=>$related_sites,
         ]);
+
+
+
 
     }
 }
