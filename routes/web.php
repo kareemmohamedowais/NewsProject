@@ -3,6 +3,7 @@
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\NewsSubscriberController;
+use App\Http\Controllers\Frontend\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,8 @@ Route::group([
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::post('news-subscibe',[NewsSubscriberController::class,'store'])->name('news.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
+
+    Route::get('post/{slug}',[PostController::class,'show'])->name('post.show');
 });
 
 

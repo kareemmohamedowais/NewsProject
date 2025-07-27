@@ -11,7 +11,7 @@
 
                 <div class="col-md-4">
                     <div class="mn-img">
-                    <img src="{{ $post->images->first()->path }}" />
+                    <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
                     <div class="mn-title">
                         <a href="" title="{{ $post->title }}">{{ $post->title }}</a>
                     </div>
