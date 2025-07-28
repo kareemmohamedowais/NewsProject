@@ -26,6 +26,10 @@ Route::group([
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
 
     Route::get('post/{slug}',[PostController::class,'show'])->name('post.show');
+
+    Route::get('post/comments/{slug}',[PostController::class,'GetAllComments'])->name('post.getComments');
+    Route::post('post/comments/store',[PostController::class,'StoreComment'])->name('post.comments.store');
+
 });
 
 

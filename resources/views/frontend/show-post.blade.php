@@ -26,13 +26,13 @@
                     <li data-target="#newsCarousel" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner">
-                    @foreach ($post->images as $image)
+                    @foreach ($MainPost->images as $image)
                     <div class="carousel-item @if ($loop->index == 0 ) active @endif">
                         <img src="{{ asset('assets/frontend') }}/{{ $image->path }}" class="d-block w-100" alt="First Slide">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>{{ $post->title }}</h5>
+                            <h5>{{ $MainPost->title }}</h5>
                             <p>
-                                    {{substr($post->desc,0,80)}}
+                                    {{substr($MainPost->desc,0,80)}}
                             </p>
                         </div>
                         </div>
@@ -50,36 +50,40 @@
                     </a>
                 </div>
                 <div class="sn-content">
-                <h1>{{ $post->title }}</h1>
+                <h1>{{ $MainPost->title }}</h1>
                 <p>
-                    {{ $post->desc }}
+                    {{ $MainPost->desc }}
                 </p>
                 </div>
 
                 <!-- Comment Section -->
                 <div class="comment-section">
                     <!-- Comment Input -->
+                    <form id="commentForm">
+                    @csrf
                     <div class="comment-input">
-                    <input type="text" placeholder="Add a comment..." id="commentBox" />
-                    <button id="addCommentBtn">Post</button>
+                    <input type="text" name="comment" placeholder="Add a comment..." id="commentinput" />
+                    <input type="hidden" name="user_id"  value="1">
+                    <input type="hidden" name="post_id"  value="{{ $MainPost->id }}">
+                    <button type="submit">Post</button>
                     </div>
+                    </form>
+                    <div id="commentError" style="display: none" class="alert alert-danger">
+                        {{-- {{ display error }} --}}
 
+                    </div>
                     <!-- Display Comments -->
                     <div class="comments">
-                    <div class="comment">
-                        <img src="./img/news-450x350-2.jpg" alt="User Image" class="comment-img" />
-                        <div class="comment-content">
-                        <span class="username">User1</span>
-                        <p class="comment-text">This is an example comment.</p>
+                        @foreach ($MainPost->comments as $comment)
+                        <div class="comment">
+                            <img src="{{ $comment->user->image }}" alt="User Image" class="comment-img" />
+                            <div class="comment-content">
+                                <span class="username">{{ $comment->user->name }}</span>
+                                <p class="comment-text">{{ $comment->comment }}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="comment">
-                        <img src="./img/news-450x350-2.jpg" alt="User Image" class="comment-img" />
-                        <div class="comment-content">
-                        <span class="username">User2</span>
-                        <p class="comment-text">This is an example comment.</p>
-                        </div>
-                    </div>
+                        @endforeach
+
                     <!-- Add more comments here for demonstration -->
                     </div>
 
@@ -232,3 +236,79 @@
         <!-- Single News End-->
 
     @endsection
+
+    @push('js')
+
+    <script>
+        // show more comments
+        $(document).on('click', '#showMoreBtn', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url:"{{ route('frontend.post.getComments', $MainPost->slug) }}",
+                type:'GET',
+                success:function(response) {
+                    $('.comments').empty();
+                    $.each(response, function(index, comment) {
+                        $('.comments').append(`
+                        <div class="comment">
+                            <img src="${comment.user.image}" alt="User Image" class="comment-img" />
+                            <div class="comment-content">
+                                <span class="username">${comment.user.name}</span>
+                                <p class="comment-text">${comment.comment}</p>
+                            </div>
+                        </div>
+                        `)
+                    })
+                    $('#showMoreBtn').remove();
+                },
+                error:function(error) {
+
+                },
+            });
+        })
+
+
+        //save comment
+        $(document).on('submit', '#commentForm', function(e) {
+            e.preventDefault();
+
+
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url:"{{ route('frontend.post.comments.store') }}",
+                type:'POST',
+                data:formData,
+                processData:false,
+                contentType:false,
+                success:function(response) {
+                    //hide error message
+                    $('#commentError').hide();
+                    // remove text from input before append
+                    $('#commentinput').val('');
+
+                    $('.comments').prepend(
+                        `
+                        <div class="comment">
+                            <img src="${response.comment.user.image}" alt="User Image" class="comment-img" />
+                            <div class="comment-content">
+                                <span class="username">${response.comment.user.name}</span>
+                                <p class="comment-text">${response.comment.comment}</p>
+                            </div>
+                        </div>
+                        `
+                    )
+                },
+                error:function(error) {
+                    var response = $.parseJSON(error.responseText);
+                    $('#commentError').text(response.message);
+                    $('#commentError').show();
+                },
+            })
+        });
+
+
+    </script>
+
+
+    @endpush
