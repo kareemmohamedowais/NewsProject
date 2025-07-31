@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Frontend\CategoryController;
-use App\Http\Controllers\Frontend\ContactController;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\NewsSubscriberController;
-use App\Http\Controllers\Frontend\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\PostController;
+use App\Http\Controllers\Frontend\SearchController;
+use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\CategoryController;
+use App\Http\Controllers\Frontend\NewsSubscriberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +39,9 @@ Route::group([
     Route::controller(ContactController::class)->name('contact.')->prefix('contact')->group(function(){
     Route::get('','index')->name('index');
     Route::post('/store','store')->name('store');
-
     });
+
+    Route::match(['post','get'],'search',SearchController::class)->name('search');
 
 });
 
