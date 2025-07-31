@@ -1,5 +1,10 @@
 @extends('layouts.frontend.app')
 
+@section('breadcrumb')
+@parent
+    <li class="breadcrumb-item active">Contact</li>
+@endsection
+
 @section('body')
     {{-- <!-- Breadcrumb Start -->
     <div class="breadcrumb-wrap">

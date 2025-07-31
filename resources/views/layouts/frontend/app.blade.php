@@ -24,9 +24,22 @@
         <link href="{{ asset('assets/frontend/css/style.css') }}" rel="stylesheet" />
     </head>
 
+
+
     <body>
 
         @include('layouts.frontend.header')
+
+
+    <div class="breadcrumb-wrap">
+        <div class="container">
+            <ul class="breadcrumb">
+                @section('breadcrumb')
+                <li class="breadcrumb-item"><a href="{{route('frontend.index') }}">Home</a></li>
+                @show
+            </ul>
+        </div>
+    </div>
 
         @yield('body')
 

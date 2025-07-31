@@ -25,14 +25,21 @@ Route::group([
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::post('news-subscibe',[NewsSubscriberController::class,'store'])->name('news.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
+    // Post controller routes
+    Route::controller(PostController::class)->name('post.')->prefix('post')->group(function(){
+    Route::get('/{slug}','show')->name('show');
+    Route::get('/comments/{slug}','GetAllComments')->name('getComments');
+    Route::post('/comments/store','StoreComment')->name('comments.store');
 
-    Route::get('post/{slug}',[PostController::class,'show'])->name('post.show');
+    });
 
-    Route::get('post/comments/{slug}',[PostController::class,'GetAllComments'])->name('post.getComments');
-    Route::post('post/comments/store',[PostController::class,'StoreComment'])->name('post.comments.store');
+    //contact controller routes
 
-    Route::get('contact',[ContactController::class,'index'])->name('contact.index');
-    Route::post('contact/store',[ContactController::class,'store'])->name('contact.store');
+    Route::controller(ContactController::class)->name('contact.')->prefix('contact')->group(function(){
+    Route::get('','index')->name('index');
+    Route::post('/store','store')->name('store');
+
+    });
 
 });
 
