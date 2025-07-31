@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\CategoryController;
+use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\NewsSubscriberController;
 use App\Http\Controllers\Frontend\PostController;
@@ -29,6 +30,9 @@ Route::group([
 
     Route::get('post/comments/{slug}',[PostController::class,'GetAllComments'])->name('post.getComments');
     Route::post('post/comments/store',[PostController::class,'StoreComment'])->name('post.comments.store');
+
+    Route::get('contact',[ContactController::class,'index'])->name('contact.index');
+    Route::post('contact/store',[ContactController::class,'store'])->name('contact.store');
 
 });
 

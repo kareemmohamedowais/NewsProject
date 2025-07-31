@@ -13,7 +13,7 @@
                         <a href="">About</a>
                         <a href="">Privacy</a>
                         <a href="">Terms</a>
-                        <a href="">Contact</a>
+                        <a href="{{ route('frontend.contact.index') }}">Contact</a>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                         </div>
                         <a href="single-page.html" class="nav-item nav-link">Single Page</a>
                         <a href="dashboard.html" class="nav-item nav-link">Dashboard</a>
-                        <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+                        <a href="{{ route('frontend.contact.index') }}" class="nav-item nav-link">Contact Us</a>
                     </div>
                     <div class="social ml-auto">
                         <a href="{{ $getSetting->twitter }}"><i class="fab fa-twitter"></i></a>
