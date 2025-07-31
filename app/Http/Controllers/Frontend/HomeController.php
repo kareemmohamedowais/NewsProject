@@ -12,13 +12,13 @@ class HomeController extends Controller
     public function index()
     {
 
-        $posts = Post::with('images')->latest()->paginate(9);
+        $posts = Post::active()->with('images')->latest()->paginate(9);
 
-        $gretest_posts_views = Post::orderByDesc('num_of_views')->take(3)->get();
+        $gretest_posts_views = Post::active()->orderByDesc('num_of_views')->take(3)->get();
 
-        $oldest_news = Post::oldest()->take(3)->get();
+        $oldest_news = Post::active()->oldest()->take(3)->get();
 
-        $gretest_posts_comments = Post::withCount('comments')
+        $gretest_posts_comments = Post::active()->withCount('comments')
             ->orderByDesc('comments_count')
             ->take(3)
             ->get();
@@ -28,7 +28,7 @@ class HomeController extends Controller
             $category->posts = $category->posts()->limit(4)->get();
             return $category;
         });
-        
+
         return view(
             'frontend.index',
             compact('posts', 'gretest_posts_views', 'categories_with_posts', 'oldest_news', 'gretest_posts_comments')
