@@ -1,5 +1,9 @@
     @extends('layouts.frontend.app')
 
+    @section('title')
+    {{ $category->name }}
+    @endsection
+
 @section('breadcrumb')
 @parent
     <li  class="breadcrumb-item active">{{ $category->name }}</li>
@@ -18,7 +22,7 @@
                     <div class="mn-img">
                     <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
                     <div class="mn-title">
-                        <a href="" title="{{ $post->title }}">{{ $post->title }}</a>
+                        <a href="{{ route('frontend.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
                     </div>
                     </div>
                 </div>

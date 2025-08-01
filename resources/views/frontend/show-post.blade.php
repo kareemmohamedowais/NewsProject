@@ -1,5 +1,8 @@
     @extends('layouts.frontend.app')
 
+    @section('title')
+    {{ $MainPost->title }}
+    @endsection
 
 @section('breadcrumb')
 @parent

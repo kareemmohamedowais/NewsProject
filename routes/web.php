@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\SearchController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\NewsSubscriberController;
 
@@ -23,7 +24,7 @@ use App\Http\Controllers\Frontend\NewsSubscriberController;
 Route::group([
     'as' => 'frontend.'
 ], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/home', [HomeController::class, 'index'])->name('index')->middleware('auth','verified');
     Route::post('news-subscibe',[NewsSubscriberController::class,'store'])->name('news.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
     // Post controller routes
@@ -35,7 +36,6 @@ Route::group([
     });
 
     //contact controller routes
-
     Route::controller(ContactController::class)->name('contact.')->prefix('contact')->group(function(){
     Route::get('','index')->name('index');
     Route::post('/store','store')->name('store');
@@ -48,4 +48,6 @@ Route::group([
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('email/verify', [VerificationController::class,'show'])->name('verification.notice');
+Route::get('email/verify/{id}/{hash}', [VerificationController::class,'verify'])->name('verification.verify');
+Route::post('email/resend', [VerificationController::class,'resend'])->name('verification.resend');

@@ -72,7 +72,7 @@
     <!-- Footer End -->
 
     <!-- Footer Menu Start -->
-    <div class="footer-menu">
+    {{-- <div class="footer-menu">
         <div class="container">
             <div class="f-menu">
                 <a href="">Terms of use</a>
@@ -83,7 +83,7 @@
                 <a href="">Contact us</a>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Footer Menu End -->
 
     <!-- Footer Bottom Start -->
@@ -92,7 +92,7 @@
             <div class="row">
                 <div class="col-md-6 copyright">
                     <p>
-                        Copyright &copy; <a href="">Your Site Name</a>. All Rights
+                        Copyright &copy; <a href="{{ route('frontend.index') }}">{{ config('app.name') }}</a>. All Rights
                         Reserved
                     </p>
                 </div>

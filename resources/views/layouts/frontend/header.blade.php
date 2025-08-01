@@ -10,10 +10,17 @@
                 </div>
                 <div class="col-md-6">
                     <div class="tb-menu">
-                        <a href="">About</a>
-                        <a href="">Privacy</a>
-                        <a href="">Terms</a>
-                        <a href="{{ route('frontend.contact.index') }}">Contact</a>
+                                                @guest
+
+                        <a href="{{ route('register') }}">Register</a>
+                        <a href="{{ route('login') }}">Login</a>
+                        @endguest
+                        @auth
+                        <a href="javascript:void(0)" onclick="if(confirm('Are you sure you want to logout?')){document.getElementById('logout-form').submit()} return false ">Logout</a>
+                        @endauth
+                        <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>
@@ -71,9 +78,8 @@
                                 @endforeach
                             </div>
                         </div>
-                        <a href="single-page.html" class="nav-item nav-link">Single Page</a>
-                        <a href="dashboard.html" class="nav-item nav-link">Dashboard</a>
                         <a href="{{ route('frontend.contact.index') }}" class="nav-item nav-link">Contact Us</a>
+                        <a href="dashboard.html" class="nav-item nav-link">Dashboard</a>
                     </div>
                     <div class="social ml-auto">
                         <a href="{{ $getSetting->twitter }}"><i class="fab fa-twitter"></i></a>
