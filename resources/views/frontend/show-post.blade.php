@@ -100,8 +100,7 @@
                     <!-- Add more comments here for demonstration -->
                     </div>
 
-                    <!-- Show More Button -->
-                    @if ($MainPost->comments->count()>3)
+                    @if ($MainPost->comments->count()>2)
                     <button id="showMoreBtn" class="show-more-btn">Show more</button>
                     @endif
                 </div>

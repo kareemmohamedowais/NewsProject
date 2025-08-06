@@ -19,6 +19,7 @@ class PostController extends Controller
         $category = $MainPost->category;
         $posts_belongsto_category = $category->posts()->active()->select('id', 'slug', 'title')->limit(5)->get();
 
+        $MainPost->increment('num_of_views');
         return view('frontend.show-post', compact('MainPost', 'posts_belongsto_category'));
     }
 

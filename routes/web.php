@@ -52,6 +52,7 @@ Route::group([
             Route::post('/post/store','store')->name('post.store');
             Route::get('/post/edit/{slug}','edit')->name('post.edit');
             Route::delete('/post/delete','delete')->name('post.delete');
+            Route::get('/post/comments/{id}','getComments')->name('post.getComments');
         });
     });
 });

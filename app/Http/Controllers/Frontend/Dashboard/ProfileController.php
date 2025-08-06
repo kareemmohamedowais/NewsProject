@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Dashboard;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Image;
 use App\Utils\ImageManager;
@@ -68,7 +69,7 @@ class ProfileController extends Controller
     public function edit($slug){
         return $slug;
     }
-    
+
     public function delete(Request $request){
         $post = Post::where('slug',$request->slug)->first();
         if(!$post){
@@ -76,6 +77,25 @@ class ProfileController extends Controller
         }
         ImageManager::deleteImages($post);
         $post->delete();
+        Cache::forget('read_more_posts');
+        Cache::forget('latest_posts');
         return redirect()->back()->with('success','post deleted succsfully');
+    }
+
+    public function getComments($id){
+        // $post = Post::findOrFail($id);
+        // $comments = $post->comments()->get();
+
+        $comments = Comment::with(['user'])->where('post_id',$id)->get();
+        if(!$comments){
+            return response()->json([
+                'data'=>null,
+                'msg' =>'no comments'
+            ]);
+        }
+        return response()->json([
+            'data'=>$comments,
+            'msg' =>'contain comments'
+        ]);
     }
 }

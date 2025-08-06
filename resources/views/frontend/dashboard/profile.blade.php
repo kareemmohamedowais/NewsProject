@@ -160,8 +160,11 @@
                                     <i class="fas fa-thumbs-up"></i> Delete
                                 </a>
 
-                                <button class="btn btn-sm btn-outline-secondary">
+                                <button post-id="{{ $post->id }}" id="commentbtn_{{ $post->id }}" class="getComments" class="btn btn-sm btn-outline-secondary">
                                     <i class="fas fa-comment"></i> Comments
+                                </button>
+                                <button style="display: none;" post-id="{{ $post->id }}" id="hideCommentId_{{ $post->id }}" class="hideComments" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-comment"></i> Hide Comments
                                 </button>
                                 {{-- // form to delete --}}
                                 <form id="deletepostform_{{ $post->id }}" action="{{ route('frontend.dashboard.post.delete') }}" method="post">
@@ -173,14 +176,8 @@
                         </div>
 
                           <!-- Display Comments -->
-                          <div class="comments">
-                                <div class="comment">
-                                    <img src="{{ asset($post->user->image) }}" alt="User Image" class="comment-img" />
-                                    <div class="comment-content">
-                                        <span class="{{ $post->user->name }}"></span>
-                                        <p class="comment-text">first comment</p>
-                                    </div>
-                                </div>
+                          <div id="displayComments_{{ $post->id }}" class="comments" style="display: none;">
+
                             <!-- Add more comments here for demonstration -->
                            </div>
                     </div>
@@ -216,6 +213,47 @@
         height: 150,
 
     });
+        //    get post comments
+        $(document).on('click', '.getComments', function(e) {
+            e.preventDefault();
+            var post_id = $(this).attr('post-id');
+
+            $.ajax({
+                type: "GET",
+                url: '{{ route('frontend.dashboard.post.getComments', ':post_id') }}'.replace(':post_id', post_id),
+                success: function(response) {
+                    $('#displayComments_'+post_id).empty();
+
+                    $.each(response.data, function(indexInArray, comment) {
+                        $('#displayComments_'+post_id).append(`<div class="comment">
+                                        <img src="${comment.user.image}" alt="User Image" class="comment-img" />
+                                        <div class="comment-content">
+                                            <span class="username">${comment.user.name}</span>
+                                            <p class="comment-text">${comment.comment}</p>
+                                        </div>
+                                    </div>`).show();
+                    });
+                    $('#commentbtn_'+post_id).hide();
+                    $('#hideCommentId_'+post_id).show();
+                }
+            });
+
+        });
+
+        // hide post comments
+        $(document).on('click',  '.hideComments' , function(e){
+            e.preventDefault();
+            var post_id = $(this).attr('post-id');
+
+            // 1- hide comments
+            $('#displayComments_'+post_id).hide();
+            // 2- hide (hide comment btn)
+            $('#hideCommentId_'+post_id).hide();
+
+            // 3- Apper btn (comment)
+            $('#commentbtn_'+post_id).show();
+
+        });
 </script>
 @endpush
 
