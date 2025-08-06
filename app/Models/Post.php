@@ -19,6 +19,8 @@ class Post extends Model
         'num_of_views',
         'status',
         'category_id',
+        'user_id',
+        'admin_id',
 
     ];
 

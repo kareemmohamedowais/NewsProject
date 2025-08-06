@@ -2,6 +2,7 @@
 namespace App\Utils;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class ImageManager{
     public static function uploadImages($request , $post){
@@ -23,6 +24,15 @@ class ImageManager{
             }
         }
 
+    }
+    public static function deleteImages($post){
+        if($post->images->count()>0){
+            foreach ($post->images as $image) {
+                if(File::exists(public_path($image->path))){
+                    File::delete(public_path($image->path));
+                }
+            }
+        }
     }
 }
 

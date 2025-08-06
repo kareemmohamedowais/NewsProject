@@ -44,12 +44,14 @@ Route::group([
 
     Route::match(['post','get'],'search',SearchController::class)->name('search');
 
-    // dashboard controller routes
+    // dashboard controller routes (profile page)
     Route::prefix('Acount')->name('dashboard.')->middleware('auth','verified')
     ->group(function(){
         Route::controller(ProfileController::class)->group(function(){
             Route::get('/profile','index')->name('profile');
             Route::post('/post/store','store')->name('post.store');
+            Route::get('/post/edit/{slug}','edit')->name('post.edit');
+            Route::delete('/post/delete','delete')->name('post.delete');
         });
     });
 });
