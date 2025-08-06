@@ -37,12 +37,10 @@
                     <div class="carousel-inner">
                     @foreach ($MainPost->images as $image)
                     <div class="carousel-item @if ($loop->index == 0 ) active @endif">
-                        <img src="{{ asset('assets/frontend') }}/{{ $image->path }}" class="d-block w-100" alt="First Slide">
+                        <img src="{{ asset( $MainPost->images->first()->path )}}" class="d-block w-100" alt="First Slide">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>{{ $MainPost->title }}</h5>
-                            <p>
-                                    {{substr($MainPost->desc,0,80)}}
-                            </p>
+
                         </div>
                         </div>
                     @endforeach
@@ -59,24 +57,30 @@
                     </a>
                 </div>
                 <div class="sn-content">
-                <h1>{{ $MainPost->title }}</h1>
-                <p>
-                    {{ $MainPost->desc }}
-                </p>
+
+                    {!! $MainPost->desc !!}
+
                 </div>
 
                 <!-- Comment Section -->
                 <div class="comment-section">
                     <!-- Comment Input -->
-                    <form id="commentForm">
+                    @if ($MainPost->comment_able == true)
+
+                    <form id="commentForm" >
                     @csrf
                     <div class="comment-input">
                     <input type="text" name="comment" placeholder="Add a comment..." id="commentinput" />
-                    <input type="hidden" name="user_id"  value="1">
+                    <input type="hidden" name="user_id"  value="{{ auth()->user()->id }}">
                     <input type="hidden" name="post_id"  value="{{ $MainPost->id }}">
                     <button type="submit">Post</button>
                     </div>
                     </form>
+                    @else
+                    <div class="alert alert-info">
+                        unable comment
+                    </div>
+                    @endif
                     <div id="commentError" style="display: none" class="alert alert-danger">
                         {{-- {{ display error }} --}}
 
@@ -97,7 +101,9 @@
                     </div>
 
                     <!-- Show More Button -->
+                    @if ($MainPost->comments->count()>3)
                     <button id="showMoreBtn" class="show-more-btn">Show more</button>
+                    @endif
                 </div>
 
                 <!-- Related News -->
@@ -108,7 +114,7 @@
 
                     <div class="col-md-4">
                         <div class="sn-img">
-                        <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" class="img-fluid" alt="Related News 1" />
+                        <img src="{{ asset($post->images->first()->path )}}" class="img-fluid" alt="Related News 1" />
                         <div class="sn-title">
                             <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
                         </div>
@@ -129,7 +135,7 @@
 
                     <div class="nl-item">
                         <div class="nl-img">
-                        <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                        <img src="{{ asset($post->images->first()->path )}}" />
                         </div>
                         <div class="nl-title">
                         <a href="{{ route('frontend.post.show', $post->slug) }}"
@@ -176,7 +182,7 @@
 
                             <div class="tn-news">
                                 <div class="tn-img">
-                                <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path  }}" />
+                                <img src="{{ asset($post->images->first()->path )}}" />
                                 </div>
                                 <div class="tn-title">
                                 <a href="{{ route('frontend.post.show', $post->slug) }}"
@@ -192,7 +198,7 @@
 
                             <div class="tn-news">
                                 <div class="tn-img">
-                                <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path  }}" />
+                                <img src="{{ asset($post->images->first()->path )}}" />
                                 </div>
                                 <div class="tn-title">
                                 <a href="{{ route('frontend.post.show', $post->slug) }}"

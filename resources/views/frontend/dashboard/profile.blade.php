@@ -1,5 +1,8 @@
 @extends('layouts.frontend.app')
 
+@section('title')
+  Profile
+@endsection
 @section('body')
 <!-- Profile Start -->
 <div class="dashboard container">
@@ -7,14 +10,14 @@
     <aside class="col-md-3 nav-sticky dashboard-sidebar">
         <!-- User Info Section -->
         <div class="user-info text-center p-3">
-            <img src="" alt="User Image" class="rounded-circle mb-2"
+            <img src="{{ asset(Auth::user()->image) }}" alt="User Image" class="rounded-circle mb-2"
                 style="width: 80px; height: 80px; object-fit: cover" />
-            <h5 class="mb-0" style="color: #ff6f61">Salem Taha</h5>
+            <h5 class="mb-0" style="color: #ff6f61">{{ Auth::user()->name }}</h5>
         </div>
 
         <!-- Sidebar Menu -->
         <div class="list-group profile-sidebar-menu">
-            <a href="./dashboard.html" class="list-group-item list-group-item-action active menu-item" data-section="profile">
+            <a href="{{ route('frontend.dashboard.profile') }}" class="list-group-item list-group-item-action active menu-item" data-section="profile">
                 <i class="fas fa-user"></i> Profile
             </a>
             <a href="./notifications.html" class="list-group-item list-group-item-action menu-item" data-section="notifications">
@@ -32,45 +35,65 @@
         <section id="profile" class="content-section active">
             <h2>User Profile</h2>
             <div class="user-profile mb-3">
-                <img src="" alt="User Image" class="profile-img rounded-circle" style="width: 100px; height: 100px;" />
-                <span class="username">Salem Taha</span>
+                <img src="{{ asset(Auth::user()->image) }}" alt="User Image" class="profile-img rounded-circle" style="width: 100px; height: 100px;" />
+                <span class="username">{{ Auth::user()->name }}</span>
             </div>
             <br>
+            {{-- validation error --}}
+            @if (session()->has('errors'))
+            <div class="alert alert-danger">
+                @foreach (session('errors')->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
 
-            <!-- Add Post Section -->
+            </div>
+            @endif
+            {{-- try catch error --}}
+            {{-- @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+            @endif --}}
+
+            <form action="{{ route('frontend.dashboard.post.store') }}" method="post" enctype="multipart/form-data">
+            @csrf
+                <!-- Add Post Section -->
             <section id="add-post" class="add-post-section mb-5">
                 <h2>Add Post</h2>
                 <div class="post-form p-3 border rounded">
                     <!-- Post Title -->
-                    <input type="text" id="postTitle" class="form-control mb-2" placeholder="Post Title" />
+                    <input type="text" name="title" value="{{ old('title') }}"  id="postTitle" class="form-control mb-2" placeholder="Post Title" />
 
                     <!-- Post Content -->
-                    <textarea id="postContent" class="form-control mb-2" rows="3" placeholder="What's on your mind?"></textarea>
+                    <textarea  name="desc" id="postContent" class="form-control mb-2" rows="3" placeholder="What's on your mind?">
+                        {{ old('desc') }}
+                    </textarea>
 
                     <!-- Image Upload -->
-                    <input type="file" id="postImage" class="form-control mb-2" accept="image/*" multiple />
+                    <input  name="images[]" type="file" id="postImage" class="form-control mb-2" accept="image/*" multiple />
                     <div class="tn-slider mb-2">
                         <div id="imagePreview" class="slick-slider"></div>
                     </div>
 
                     <!-- Category Dropdown -->
-                    <select id="postCategory" class="form-select mb-2">
-                        <option value="">Select Category</option>
-                        <option value="general">General</option>
-                        <option value="tech">Tech</option>
-                        <option value="life">Life</option>
-                    </select>
+                    <select  name="category_id" id="postCategory" class="form-select mb-2">
+                        <option selected disabled value="">Select Category</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select> <br>
 
                     <!-- Enable Comments Checkbox -->
                     <label class="form-check-label mb-2">
-                        <input type="checkbox" class="form-check-input" /> Enable Comments
+                        Enable Comments : <input name="comment_able" type="checkbox" style="margin-left: 10px;" class="form-check-input" />
                     </label><br>
+
 
                     <!-- Post Button -->
                     <button class="btn btn-primary post-btn">Post</button>
                 </div>
             </section>
-
+            </form>
             <!-- Posts Section -->
             <section id="posts" class="posts-section">
                 <h2>Recent Posts</h2>
@@ -182,7 +205,7 @@
     });
     // summernote
     $('#postContent').summernote({
-        height: 300,
+        height: 150,
 
     });
 </script>

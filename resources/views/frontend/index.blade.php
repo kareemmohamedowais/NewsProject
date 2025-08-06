@@ -17,8 +17,8 @@
 
                         @foreach ($latest_three_posts as $post)
                             <div class="col-md-6">
-                                <div class="tn-img">
-                                    <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                <div class="tn-img" style="width: 500px; height: 350px;">
+                                    <img src="{{ asset( $post->images->first()->path )}}" style="width: 350px; height: 350px;" />
                                     <div class="tn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
                                     </div>
@@ -34,8 +34,8 @@
                     <div class="row">
                         @foreach ($four_posts as $post)
                             <div class="col-md-6">
-                                <div class="tn-img">
-                                    <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                <div class="tn-img" style="width: 300px; height: 300px;">
+                                    <img style="width: 250px; height: 250px;" src="{{ asset( $post->images->first()->path )}}"  />
                                     <div class="tn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
                                     </div>
@@ -65,7 +65,7 @@
                             @foreach ($category->posts as $post)
                                 <div class="col-md-6">
                                     <div class="cn-img">
-                                        <img src="{{ asset('assets/frontend') }}/{{ $post->images()->first()->path }}" />
+                                        <img src="{{ asset( $post->images->first()->path )}}" />
                                         <div class="cn-title">
                                             <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
                                         </div>
@@ -101,7 +101,7 @@
                             @foreach ($oldest_news as $post)
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                        <img src="{{ asset( $post->images->first()->path )}}" />
                                     </div>
                                     <div class="tn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
@@ -114,7 +114,7 @@
                             @foreach ($gretest_posts_comments as $post)
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                        <img src="{{ asset( $post->images->first()->path )}}" />
                                     </div>
                                     <div class="tn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }} ({{ $post->comments_count }})</a>
@@ -145,7 +145,7 @@
                             @foreach ($latest_three_posts as $post)
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                        <img src="{{ asset( $post->images->first()->path )}}"/>
                                     </div>
                                     <div class="tn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
@@ -158,7 +158,7 @@
                             @foreach ($gretest_posts_views as $post)
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                        <img src="{{ asset( $post->images->first()->path )}}" />
                                     </div>
                                     <div class="tn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }} ({{ $post->num_of_views }})</a>
@@ -186,7 +186,7 @@
                         @foreach ($posts as $post)
                             <div class="col-md-4">
                                 <div class="mn-img">
-                                    <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
+                                    <img src="{{ asset( $post->images->first()->path )}}" />
                                     <div class="mn-title">
                                         <a href="{{ route('frontend.post.show', $post->slug) }}">{{ $post->title }}</a>
                                     </div>

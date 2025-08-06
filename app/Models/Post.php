@@ -18,6 +18,7 @@ class Post extends Model
         'comment_able',
         'num_of_views',
         'status',
+        'category_id',
 
     ];
 

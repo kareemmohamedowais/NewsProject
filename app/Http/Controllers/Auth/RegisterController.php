@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller 
+class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -88,13 +88,24 @@ class RegisterController extends Controller
         if($data['image']){
             $file = $data['image'];
             $filename = Str::slug($user->username).time().$file->getClientOriginalExtension();
-
-            $path = $file->storeAs('uploads/users',$filename,["disk"=>"uploads"]);
+            $path = $file->storeAs('uploads/users',$filename ,['disk'=>'uploads'] );
 
             $user->update([
-                'image' =>$path,
+                'image'=>$path,
             ]);
         }
+
+
+        // if($data['image']){
+        //     $file = $data['image'];
+        //     $filename = Str::slug($user->username).time().$file->getClientOriginalExtension();
+
+        //     $path = $file->storeAs('uploads/users',$filename,["disk"=>"uploads"]);
+
+        //     $user->update([
+        //         'image' =>$path,
+        //     ]);
+        // }
         return $user;
 
     }

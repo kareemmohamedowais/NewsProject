@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\NewsSubscriberController;
+use App\Http\Controllers\Frontend\Dashboard\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,12 +44,16 @@ Route::group([
 
     Route::match(['post','get'],'search',SearchController::class)->name('search');
 
+    // dashboard controller routes
+    Route::prefix('Acount')->name('dashboard.')->middleware('auth','verified')
+    ->group(function(){
+        Route::controller(ProfileController::class)->group(function(){
+            Route::get('/profile','index')->name('profile');
+            Route::post('/post/store','store')->name('post.store');
+        });
+    });
 });
 
-
-Route::get('test',function(){
-    return view('frontend.dashboard.profile');
-});
 
 Auth::routes();
 
