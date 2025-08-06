@@ -24,7 +24,7 @@ use App\Http\Controllers\Frontend\NewsSubscriberController;
 Route::group([
     'as' => 'frontend.'
 ], function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('index')->middleware('auth','verified');
+    Route::get('/home', [HomeController::class, 'index'])->name('index');
     Route::post('news-subscibe',[NewsSubscriberController::class,'store'])->name('news.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
     // Post controller routes
@@ -45,6 +45,10 @@ Route::group([
 
 });
 
+
+Route::get('test',function(){
+    return view('frontend.dashboard.profile');
+});
 
 Auth::routes();
 

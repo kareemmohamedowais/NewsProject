@@ -22,6 +22,12 @@
 
         <!-- Template Stylesheet -->
         <link href="{{ asset('assets/frontend/css/style.css') }}" rel="stylesheet" />
+        {{-- // file input --}}
+        <link rel="stylesheet" href="{{ asset('assets/vendor/file-input/css/fileinput.min.css') }}">
+        {{-- summernote --}}
+        <link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote-bs4.min.css') }}">
+
+
     </head>
 
 
@@ -55,6 +61,12 @@
 
         <!-- Template Javascript -->
         <script src="{{ asset('assets/frontend/js/main.js') }}"></script>
+        {{-- file input --}}
+        <script src="{{ asset('assets/vendor/file-input/js/fileinput.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/file-input/themes/fa5/theme.min.js') }}"></script>
+        {{-- summernote --}}
+        <script src="{{ asset('assets/vendor/summernote/summernote-bs4.min.js') }}"></script>
+
         @stack('js')
     </body>
 
