@@ -23,7 +23,7 @@
             <a href="./notifications.html" class="list-group-item list-group-item-action menu-item" data-section="notifications">
                 <i class="fas fa-bell"></i> Notifications
             </a>
-            <a href="./setting.html" class="list-group-item list-group-item-action menu-item" data-section="settings">
+            <a href="{{ route('frontend.dashboard.setting') }}" class="list-group-item list-group-item-action menu-item" data-section="settings">
                 <i class="fas fa-cog"></i> Settings
             </a>
         </div>

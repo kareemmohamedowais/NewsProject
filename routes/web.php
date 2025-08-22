@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\Dashboard\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
@@ -54,8 +55,15 @@ Route::group([
             Route::delete('/post/delete','delete')->name('post.delete');
             Route::get('/post/comments/{id}','getComments')->name('post.getComments');
         });
+        Route::prefix('setting')->controller(SettingController::class)->group(function(){
+            Route::get('','index')->name('setting');
+            Route::post('','update')->name('setting.update');
+            Route::post('/changePassword','changePassword')->name('setting.changePassword');
+        });
     });
 });
+
+
 
 
 Auth::routes();
@@ -63,3 +71,4 @@ Auth::routes();
 Route::get('email/verify', [VerificationController::class,'show'])->name('verification.notice');
 Route::get('email/verify/{id}/{hash}', [VerificationController::class,'verify'])->name('verification.verify');
 Route::post('email/resend', [VerificationController::class,'resend'])->name('verification.resend');
+
