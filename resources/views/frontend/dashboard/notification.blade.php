@@ -8,68 +8,61 @@
           <!-- User Info Section -->
           <div class="user-info text-center p-3">
             <img
-              src="./img/news-450x350-2.jpg"
+              src="{{ asset(auth()->user()->image) }}"
               alt="User Image"
               class="rounded-circle mb-2"
               style="width: 80px; height: 80px; object-fit: cover"
             />
-            <h5 class="mb-0" style="color: #ff6f61">Salem Taha</h5>
+            <h5 class="mb-0" style="color: #ff6f61">{{ auth()->user()->name }}</h5>
           </div>
 
           <!-- Sidebar Menu -->
-          <div class="list-group profile-sidebar-menu">
-            <a
-              href="./dashboard.html"
-              class="list-group-item list-group-item-action menu-item"
-              data-section="profile"
-            >
-              <i class="fas fa-user"></i> Profile
+        <div class="list-group profile-sidebar-menu">
+            <a href="{{ route('frontend.dashboard.profile') }}" class="list-group-item list-group-item-action  menu-item" data-section="profile">
+                <i class="fas fa-user"></i> Profile
             </a>
-            <a
-              href="./notifications.html"
-              class="list-group-item list-group-item-action active menu-item"
-              data-section="notifications"
-            >
-              <i class="fas fa-bell"></i> Notifications
+            <a href="{{ route('frontend.dashboard.notification.index') }}" class="list-group-item list-group-item-action active menu-item" data-section="notifications">
+                <i class="fas fa-bell"></i> Notifications
             </a>
-            <a
-              href="./setting.html"
-              class="list-group-item list-group-item-action menu-item"
-              data-section="settings"
-            >
-              <i class="fas fa-cog"></i> Settings
+            <a href="{{ route('frontend.dashboard.setting') }}" class="list-group-item list-group-item-action menu-item" data-section="settings">
+                <i class="fas fa-cog"></i> Settings
             </a>
-          </div>
+        </div>
         </aside>
 
         <!-- Main Content -->
         <div class="main-content">
             <div class="container">
-                <h2 class="mb-4">Notifications</h2>
-               <a href="">
-                <div class="notification alert alert-info">
-                    <strong>Info!</strong> This is an informational notification.
-                    <div class="float-right">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="mb-4">Notifications</h2>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ route('frontend.dashboard.notification.deleteAll') }}" style="margin-left: 270px" class="btn btn-sm btn-danger">Delete All</a>
                     </div>
                 </div>
-               </a>
-               <a href="">
-                <div class="notification alert alert-warning">
-                    <strong>Warning!</strong> This is a warning notification.
-                    <div class="float-right">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                @forelse (auth()->user()->notifications as $notify)
+                <a href="{{ $notify->data['link'] }}?notify={{ $notify->id }}">
+                    <div class="notification alert alert-info">
+                        <strong>You have a notification from: {{ $notify->data['user_name'] }}</strong> Post title:{{ $notify->data['post_title'] }}.<br>
+                        {{ $notify->created_at->diffForHumans() }}
+                        <div class="float-right">
+                            <button onclick="if(confirm('Are u Sure To Delete Notify?')){document.getElementById('deleteNotify').submit()} return false" class="btn btn-danger btn-sm">Delete</button>
+                        </div>
                     </div>
-                </div>
-               </a>
-               <a href="">
-                <div class="notification alert alert-success">
-                    <strong>Success!</strong> This is a success notification.
-                    <div class="float-right">
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                </a>
+                <form id="deleteNotify" action="{{ route('frontend.dashboard.notification.delete') }}" method="post">
+                    @csrf
+                    <input hidden name="notify_id" value="{{ $notify->id }}">
+                </form>
+                @empty
+                    <div class="alert alert-info">
+                        No Notifications yet!
                     </div>
-                </div>
-               </a>
+
+                @endforelse
+
+
             </div>
         </div>
       </div>

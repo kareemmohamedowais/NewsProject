@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Comment;
+use App\Notifications\NewCommentNotify;
 
 class PostController extends Controller
 {
@@ -34,10 +36,10 @@ class PostController extends Controller
             'user_id'=>['required','exists:users,id'],
             'comment'=>['required','string','max:200'],
         ]);
-        $validated = $request->validate([
-        'user_id' => 'required|exists:users,id',
-        'comment' => 'required|string|max:200',
-    ]);
+    //     $validated = $request->validate([
+    //     'user_id' => 'required|exists:users,id',
+    //     'comment' => 'required|string|max:200',
+    // ]);
 
         $comment = Comment::create([
             'user_id'=>$request->user_id,
@@ -45,6 +47,11 @@ class PostController extends Controller
             'post_id'=>$request->post_id,
             'ip_address'=>$request->ip(),
         ]);
+
+        // new comment notification
+        $post = Post::findOrFail($request->post_id);
+        $user = $post->user;
+        $user->notify(new NewCommentNotify($comment,$post));
 
         $comment->load('user');
 

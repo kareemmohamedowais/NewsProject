@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\Dashboard\NotificationController;
 use App\Http\Controllers\Frontend\Dashboard\SettingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
@@ -51,7 +52,6 @@ Route::group([
         Route::controller(ProfileController::class)->group(function(){
             Route::get('/profile','index')->name('profile');
             Route::post('/post/store','store')->name('post.store');
-            // Route::get('/post/edit/{slug}','edit')->name('post.edit');
             Route::delete('/post/delete','delete')->name('post.delete');
             Route::get('/post/comments/{id}','getComments')->name('post.getComments');
 
@@ -62,10 +62,17 @@ Route::group([
 
 
         });
+        //setting routes
         Route::prefix('setting')->controller(SettingController::class)->group(function(){
             Route::get('','index')->name('setting');
             Route::post('','update')->name('setting.update');
             Route::post('/changePassword','changePassword')->name('setting.changePassword');
+        });
+        //notivications route
+        Route::prefix('notification')->controller(NotificationController::class)->group(function(){
+            Route::get('/','index')->name('notification.index');
+            Route::post('/delete','delete')->name('notification.delete');
+            Route::get('/deleteAll','deleteAll')->name('notification.deleteAll');
         });
     });
 });

@@ -83,6 +83,29 @@
                         <a href="{{ route('frontend.dashboard.profile') }}" class="nav-item nav-link">Dashboard</a>
                     </div>
                     <div class="social ml-auto">
+                         <!-- Notification Dropdown -->
+ <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-bell"></i>
+    <span class="badge badge-danger">
+        {{ auth()->user()->unreadNotifications->count() }}
+    </span>
+</a>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="width: 350px;">
+    <h6 class="dropdown-header">Notifications</h6>
+
+        @forelse (auth()->user()->unreadNotifications->take(5) as $notification)
+<div class="dropdown-item d-flex justify-content-between align-items-center">
+            <p>{{ substr($notification->data['post_title'], 0, 5)}}</p>
+            <span>{{ $notification->data['comment'] }}</span>
+            <a href="{{ $notification->data['link'] }}?notify={{ $notification->id }}"><i class="fa fa-eye"></i></a>
+        </div>
+        @empty
+            <p>No notifications</p>
+        @endforelse
+
+         <!-- <div class="dropdown-item text-center">No notifications</div>  -->
+
+</div>
                         <a href="{{ $getSetting->twitter }}"><i class="fab fa-twitter"></i></a>
                         <a href="{{ $getSetting->facebook }}"><i class="fab fa-facebook-f"></i></a>
                         <a href="{{ $getSetting->instagram }}"><i class="fab fa-instagram"></i></a>
