@@ -51,9 +51,16 @@ Route::group([
         Route::controller(ProfileController::class)->group(function(){
             Route::get('/profile','index')->name('profile');
             Route::post('/post/store','store')->name('post.store');
-            Route::get('/post/edit/{slug}','edit')->name('post.edit');
+            // Route::get('/post/edit/{slug}','edit')->name('post.edit');
             Route::delete('/post/delete','delete')->name('post.delete');
             Route::get('/post/comments/{id}','getComments')->name('post.getComments');
+
+            //edit post routes
+            Route::get('/post/{slug}/edit', 'edit')->name('post.edit');
+            Route::post('/post/update', 'update')->name('post.update');
+            Route::post('/post/image/{id}/delete', 'deletePostImage')->name('post.image.delete');
+
+
         });
         Route::prefix('setting')->controller(SettingController::class)->group(function(){
             Route::get('','index')->name('setting');

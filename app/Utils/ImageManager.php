@@ -40,6 +40,7 @@ class ImageManager{
         if($post->images->count()>0){
             foreach ($post->images as $image) {
                 self::deleteImageFromLocal($image->path);
+                $image->delete();
             }
         }
     }
@@ -51,7 +52,7 @@ class ImageManager{
         $path  = $image->storeAs('uploads/'.$path,$filename,['disk'=>'uploads']);
         return $path;
     }
-    private static function deleteImageFromLocal($image_path){
+    public static function deleteImageFromLocal($image_path){
             if(File::exists(public_path($image_path))){
                     File::delete(public_path($image_path));
             }

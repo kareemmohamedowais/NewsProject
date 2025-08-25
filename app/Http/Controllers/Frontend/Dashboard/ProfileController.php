@@ -33,6 +33,7 @@ class ProfileController extends Controller
 
         $request->validated();
         // to change input value from  on & off  to  0 , 1
+        // $this->commentAble($request);
         $request->comment_able == "on" ? $request->merge(['comment_able'=>1]):$request->merge(['comment_able'=>0]);
         // to add user_id into request
 
@@ -67,7 +68,59 @@ class ProfileController extends Controller
     }
 
     public function edit($slug){
-        return $slug;
+
+        $post = Post::with('images')->whereSlug($slug)->first();
+        if(!$post){
+            abort(404);
+        }
+        return view('frontend.dashboard.edit-post',compact("post"));
+    }
+    public function update(PostRequest $request){
+        $request->validated();
+
+        try{
+            DB::beginTransaction();
+            $post = Post::findOrFail($request->post_id);
+            $this->commentAble($request);
+            $post->update($request->except(['images', '_token', 'post_id']));
+
+            if ($request->hasFile('images')) {
+                ImageManager::deleteImages($post);
+                ImageManager::uploadImages($request, $post);
+            }
+            DB::commit();
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['errros'=>$e->getMessage()]);
+        }
+
+        Session::flash('success', 'Post Updated Successfuly!');
+        return redirect()->route('frontend.dashboard.profile');
+    }
+
+    private function commentAble($request){
+        return  $request->comment_able == "on" ? $request->merge(['comment_able'=>1])
+                :$request->merge(['comment_able'=>0]);
+
+    }
+    public function deletePostImage(Request $request)
+    {
+        $image = Image::find($request->key);
+        if (!$image) {
+            return response()->json([
+                'status' => '201',
+                'msg' => 'Image Not Found',
+            ]);
+        }
+
+        ImageManager::deleteImageFromLocal($image->path);
+        $image->delete();
+
+        return response()->json([
+            'status' => 200,
+            'msg' => 'image deleted successfully',
+        ]);
     }
 
     public function delete(Request $request){
