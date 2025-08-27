@@ -30,7 +30,7 @@ class NewCommentNotify extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database','broadcast'];
     }
 
     /**
@@ -49,6 +49,7 @@ class NewCommentNotify extends Notification
      *
      * @return array<string, mixed>
      */
+
     public function toDatabase(object $notifiable): array
     {
         return [
@@ -60,6 +61,21 @@ class NewCommentNotify extends Notification
             'link'=>route('frontend.post.show',$this->post->slug),
         ];
     }
+    public function toBroadcast(object $notifiable): array
+    {
+        return [
+            'user_id'=>$this->comment->user_id,
+            'user_name'=>auth()->user()->name,
+            'post_title' =>$this->post->title,
+            'post_slug' =>$this->post->slug,
+            'comment'=>$this->comment->comment,
+            'link'=>route('frontend.post.show',$this->post->slug),
+        ];
+    }
+    // public function broadcastType(): string
+    // {
+    //     return 'NewCommentNotify';
+    // }
     public function toArray(object $notifiable): array
     {
         return [

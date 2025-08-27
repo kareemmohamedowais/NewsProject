@@ -52,6 +52,12 @@
         @include('layouts.frontend.footer')
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        <script>
+            @auth
+                id = "{{ auth()->user()->id }}";
+            @endauth
+        </script>
+        <script src="{{ asset('build/assets/app-ime845C0.js') }}"></script>
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
