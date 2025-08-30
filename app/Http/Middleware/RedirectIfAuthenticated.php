@@ -21,6 +21,10 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                            // لو هو admin → وعايز تدخله على admin dashboard
+            if ($guard === 'admin') {
+                return redirect()->route('admin.index');
+            }
                 return redirect(RouteServiceProvider::HOME);
             }
         }

@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,4 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::controller(LoginController::class)->group(function () {
+        Route::get('login', 'showLoginForm')->name('login.show');
+        Route::post('login/check', 'checkAuth')->name('login.check');
+        Route::post('logout', 'logout')->name('logout');
+    });
+
+});
+
+Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
+    Route::get('dashboard',function(){
+        return view('dashboard.index');
+    })->name('index');
+
+});
 

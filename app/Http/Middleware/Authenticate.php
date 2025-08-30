@@ -12,6 +12,10 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
+        // لو الراوت خاص بالإدمن → رجّعه على صفحة تسجيل دخول الإدمن
+        if ($request->is('admin/*')) {
+            return route('admin.login.show');
+        }
         return $request->expectsJson() ? null : route('login');
     }
 }
