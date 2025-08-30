@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
+use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
 
 
 /*
@@ -22,8 +24,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('login/check', 'checkAuth')->name('login.check');
         Route::post('logout', 'logout')->name('logout');
     });
+    Route::group(['prefix'=>'password','as'=>'password.'],function(){
+        Route::controller(ForgetPasswordController::class)->group(function(){
+            Route::get('email','showEmailForm')->name('email');
+            Route::post('email','sendOTP')->name('sendotp');
+            Route::get('verify/{email}','showOtpForm')->name('showOtpForm');
+            Route::post('verify','verifyOtp')->name('verifyOtp');
+        });
+        Route::get('reset/{email}',[RestPasswordController::class,'ShowRestForm'])->name('ShowRestForm');
+        Route::post('reset',[RestPasswordController::class,'Reset'])->name('Reset');
 
+    });
 });
+
+
 
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
     Route::get('dashboard',function(){
