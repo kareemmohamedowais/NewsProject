@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
@@ -40,6 +41,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
+    // Users Management
+    Route::resource('users',UserController::class);
+    Route::get('admin/users/block/{id}',[UserController::class,'changeStatus'])->name('users.changeStatus');
+
     Route::get('dashboard',function(){
         return view('dashboard.index');
     })->name('index');
