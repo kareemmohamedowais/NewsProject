@@ -80,7 +80,6 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('admin.users.index') }}">Users</a>
                         <a class="collapse-item" href="{{ route('admin.users.create') }}">Add User </a>
-                        <a class="collapse-item" href="forgot-password.html">404 Page</a>
 
                     </div>
                 </div>
@@ -88,9 +87,24 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="{{ route('admin.categories.index') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                    <span>Categories</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Posts"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Posts Management</span>
+                </a>
+                <div id="Posts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('admin.users.index') }}">Posts</a>
+                        <a class="collapse-item" href="{{ route('admin.users.create') }}">Create Post </a>
+
+                    </div>
+                </div>
             </li>
 
             <!-- Nav Item - Tables -->

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
 use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
-
+use App\Http\Controllers\Admin\Category\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +43,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
     // Users Management
     Route::resource('users',UserController::class);
-    Route::get('admin/users/block/{id}',[UserController::class,'changeStatus'])->name('users.changeStatus');
+    Route::get('users/block/{id}',[UserController::class,'changeStatus'])->name('users.changeStatus');
+    // Category Management
+    Route::resource('categories',CategoryController::class);
+    Route::get('category/block/{id}',[CategoryController::class,'changeStatus'])->name('category.changeStatus');
 
     Route::get('dashboard',function(){
         return view('dashboard.index');
