@@ -94,7 +94,7 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Posts"
-                    aria-expanded="true" aria-controls="collapsePages">
+                    aria-expanded="true" aria-controls="Posts">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Posts Management</span>
                 </a>
@@ -102,6 +102,21 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('admin.posts.index') }}">Posts</a>
                         <a class="collapse-item" href="{{ route('admin.posts.create') }}">Create Post </a>
+
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Admins"
+                    aria-expanded="true" aria-controls="Admins">
+                    <i class="fas fa-fw fa-users"></i>
+                    <span>Admins Management</span>
+                </a>
+                <div id="Admins" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('admin.admins.index') }}">Admins</a>
+                        <a class="collapse-item" href="{{ route('admin.admins.create') }}">Create Admin </a>
 
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Post\PostController;
 use App\Http\Controllers\Admin\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,10 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
     Route::get('post/block/{id}',[PostController::class,'changeStatus'])->name('posts.changeStatus');
     Route::post('/posts/image/{id}/delete', [PostController::class,'deletePostImage'])->name('posts.image.delete');
     Route::get('posts/comment/delete/{id}' ,      [PostController::class , 'deleteComment'])->name('posts.deleteComment');
+    // Admins Management
+    Route::resource('admins',AdminController::class);
+    Route::get('admins/status/{id}',[AdminController::class,'changeStatus'])->name('admins.changeStatus');
+
 
     Route::get('dashboard',function(){
         return view('dashboard.index');
