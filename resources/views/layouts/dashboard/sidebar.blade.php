@@ -100,8 +100,8 @@
                 </a>
                 <div id="Posts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('admin.users.index') }}">Posts</a>
-                        <a class="collapse-item" href="{{ route('admin.users.create') }}">Create Post </a>
+                        <a class="collapse-item" href="{{ route('admin.posts.index') }}">Posts</a>
+                        <a class="collapse-item" href="{{ route('admin.posts.create') }}">Create Post </a>
 
                     </div>
                 </div>

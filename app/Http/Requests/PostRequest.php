@@ -25,9 +25,10 @@ class PostRequest extends FormRequest
             'title'=>['required','string','min:3','max:50'],
             'desc'=>['required','min:10'],
             'category_id'=>['required','exists:categories,id'],
-            'comment_able'=>'in:on,off',
-            'images'=>'nullable',
+            'comment_able'=>'in:on,off,1,0',
+            'images'=>'required',
             'images.*'=>'image|mimes:jpeg,jpg,gif,png',
+            'status'=>'nullable|in:1,0',
         ];
     }
 // to return custom message

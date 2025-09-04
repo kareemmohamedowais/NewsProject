@@ -1,9 +1,9 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Create User
+    show User
 @endsection
 
-@section('body')
+@section('content')
     <div class="d-flex justify-content-center">
         <div class="card-body shadow mb-4" style="max-width: 100ch">
             <a class="btn btn-primary" href="{{ route('admin.posts.index', ['page' => request()->page]) }}">Back To Posts</a>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-4">
                     <h6>
-                        Category : {{ $post->category->name }} <i class="fa fa-folder"></i>
+                        Category : {{ $post->category->name }}   <i class="fa fa-folder"></i>
                     </h6>
                 </div>
             </div>

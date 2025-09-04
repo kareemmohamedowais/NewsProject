@@ -32,4 +32,9 @@ class Admin extends Authenticatable
         'password' => 'hashed',
     ];
 
+public function posts()
+    {
+        return $this->hasMany(Post::class , 'admin_id');
+    }
+
 }

@@ -3,7 +3,7 @@
     Create Post
 @endsection
 
-@section('body')
+@section('content')
     <center>
         <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
             @csrf
