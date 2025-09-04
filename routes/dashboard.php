@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
 use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
 use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Setting\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +58,12 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
     // Admins Management
     Route::resource('admins',AdminController::class);
     Route::get('admins/status/{id}',[AdminController::class,'changeStatus'])->name('admins.changeStatus');
-
+    // Settings Management
+    Route::controller( SettingController::class)->prefix('setting')
+    ->as('settings.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::post('/update','update')->name('update');
+    });
 
     Route::get('dashboard',function(){
         return view('dashboard.index');

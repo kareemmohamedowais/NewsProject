@@ -44,11 +44,11 @@ class ImageManager{
             }
         }
     }
-    private static function generateImageName($image){
+    public static function generateImageName($image){
         $filename = Str::uuid(). time().'.'.$image->getClientOriginalExtension();
         return $filename;
     }
-    private static function storeImageInLocal($image,$path,$filename){
+    public static function storeImageInLocal($image,$path,$filename){
         $path  = $image->storeAs('uploads/'.$path,$filename,['disk'=>'uploads']);
         return $path;
     }
