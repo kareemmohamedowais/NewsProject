@@ -36,5 +36,26 @@ public function posts()
     {
         return $this->hasMany(Post::class , 'admin_id');
     }
+public function authorization()
+    {
+        return $this->belongsTo(Authorizations::class , 'role_id');
+    }
+
+    public function hasAccess($config_permession)  // products , users , admins
+    {
+
+        $authorizations = $this->authorization;
+
+        if(!$authorizations){
+            return false;
+        }
+
+        foreach($authorizations->permissions as $permession){
+            if($config_permession == $permession ?? false){
+                return true;
+            }
+        }
+
+    }
 
 }

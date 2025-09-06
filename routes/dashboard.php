@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
 use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
+use App\Http\Controllers\Admin\Authorization\AuthorizationController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Setting\SettingController;
 
@@ -44,6 +45,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
+    // authorizations Management
+    Route::resource('authorizations',AuthorizationController::class);
+
+
     // Users Management
     Route::resource('users',UserController::class);
     Route::get('users/block/{id}',[UserController::class,'changeStatus'])->name('users.changeStatus');

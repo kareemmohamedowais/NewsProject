@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Admin;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use App\Models\Authorizations;
 use App\Http\Requests\AdminRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,10 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+        public function __construct(){
+        $this->middleware('can:admins');
+    }
     public function index()
     {
         $order_by = request()->order_by ?? 'desc';
@@ -56,8 +61,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        // $authorizations = Authorization::select('id' , 'role')->get();
-        return view('dashboard.admins.create');
+        $authorizations = Authorizations::select('id' , 'role')->get();
+        return view('dashboard.admins.create',compact('authorizations'));
 
     }
 
@@ -90,8 +95,8 @@ public function store(AdminRequest $request)
     public function edit(string $id)
     {
         $admin = Admin::findOrFail($id);
-        // $authorizations = Authorization::select('id' , 'role')->get();
-        return view('dashboard.admins.edit' , compact(  'admin'));
+        $authorizations = Authorizations::select('id' , 'role')->get();
+        return view('dashboard.admins.edit' , compact(  'admin','authorizations'));
 
     }
 

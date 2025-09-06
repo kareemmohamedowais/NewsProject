@@ -62,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row">
+                <div class="row">
                     <div class="col-12">
                         <div class="form-group">
                             Select Role:<select name="role_id" class="form-control">
@@ -79,7 +79,7 @@
                             @enderror
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="row">
                     <div class="col-12">

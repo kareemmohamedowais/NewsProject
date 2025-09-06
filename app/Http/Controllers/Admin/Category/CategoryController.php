@@ -12,6 +12,10 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+        public function __construct(){
+        $this->middleware('can:categories');
+    }
     public function index()
     {
         $order_by = request()->order_by ?? 'desc';

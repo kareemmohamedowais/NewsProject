@@ -13,7 +13,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{ route('admin.index') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -27,22 +27,25 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            @can('authorizations')
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Authorizations</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item" href="{{ route('admin.authorizations.index') }}">Roles</a>
+                        <a class="collapse-item" href="{{ route('admin.authorizations.create') }}">Add New Role</a>
                     </div>
                 </div>
             </li>
+            @endcan
 
             <!-- Nav Item - Utilities Collapse Menu -->
+            @can('settings')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
@@ -56,6 +59,7 @@
                     </div>
                 </div>
             </li>
+            @endcan
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -66,6 +70,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+@can('users')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
@@ -80,15 +85,19 @@
                     </div>
                 </div>
             </li>
+@endcan
 
             <!-- Nav Item - Charts -->
+@can('categories')
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.categories.index') }}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Categories</span></a>
             </li>
 
-            <li class="nav-item">
+@endcan
+
+<li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Posts"
                     aria-expanded="true" aria-controls="Posts">
                     <i class="fas fa-fw fa-users"></i>
@@ -96,14 +105,20 @@
                 </a>
                 <div id="Posts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        @can('index_posts')
                         <a class="collapse-item" href="{{ route('admin.posts.index') }}">Posts</a>
+                        @endcan
+                        @can('create_posts')
                         <a class="collapse-item" href="{{ route('admin.posts.create') }}">Create Post </a>
+                        @endcan
 
                     </div>
                 </div>
             </li>
 
-            <li class="nav-item">
+
+@can('admins')
+                <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Admins"
                     aria-expanded="true" aria-controls="Admins">
                     <i class="fas fa-fw fa-users"></i>
@@ -117,6 +132,7 @@
                     </div>
                 </div>
             </li>
+@endcan
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">

@@ -20,6 +20,17 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+        public function __construct(){
+
+        $this->middleware('can:index_posts')->only('index');
+        $this->middleware('can:create_posts')->only('create');
+        $this->middleware('can:update_posts')->only('update');
+        $this->middleware('can:edit_posts')->only('edit');
+        $this->middleware('can:delete_posts')->only('destroy');
+        $this->middleware('can:change_status_posts')->only('changeStatus');
+
+    }
     public function index()
     {
         $order_by = request()->order_by ?? 'desc';
