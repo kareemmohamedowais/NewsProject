@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\Admin\AdminController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Home\HomeController;
 use App\Http\Controllers\Admin\Post\PostController;
 use App\Http\Controllers\Admin\User\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
-use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
-use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
-use App\Http\Controllers\Admin\Authorization\AuthorizationController;
-use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Admin\AdminController;
 use App\Http\Controllers\Admin\Contact\ContactController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
 use App\Http\Controllers\Admin\Setting\SettingController;
+use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
+use App\Http\Controllers\Admin\Authorization\AuthorizationController;
+use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ use App\Http\Controllers\Admin\Setting\SettingController;
 |
 */
 
-
+// auth routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::controller(LoginController::class)->group(function () {
         Route::get('login', 'showLoginForm')->name('login.show');
@@ -47,6 +48,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
+    // Home
+    Route::get('dashboard',[HomeController::class,'index'])->name('index');
+
     // authorizations Management
     Route::resource('authorizations',AuthorizationController::class);
 
@@ -85,9 +89,6 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
         Route::delete('/destroy/{id}','destroy')->name('destroy');
     });
 
-    Route::get('dashboard',function(){
-        return view('dashboard.index');
-    })->name('index');
 
 });
 
