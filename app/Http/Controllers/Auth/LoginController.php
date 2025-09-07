@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -48,5 +49,19 @@ class LoginController extends Controller
     {
         Session::flash('success','logout success');
         return redirect()->route('frontend.index');
+    }
+
+        public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect('/');
     }
 }

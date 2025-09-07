@@ -95,6 +95,16 @@
         </div>
     </div> --}}
 
+    {{-- pusher notify --}}
+<script>
+            @auth
+                role='admin';
+                adminId = "{{ auth('admin')->user()->id }}";
+            @endauth
+        </script>
+        <script src="{{ asset('build/assets/app-Bw_e-C4s.js') }}"></script>
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('admin') }}/vendor/jquery/jquery.min.js"></script>
     <script src="{{ asset('admin') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

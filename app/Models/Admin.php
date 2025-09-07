@@ -58,4 +58,9 @@ public function authorization()
 
     }
 
+        public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'admins.'.$this->id;
+    }
+
 }

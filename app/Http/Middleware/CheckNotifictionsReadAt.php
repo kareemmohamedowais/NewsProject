@@ -22,6 +22,13 @@ class CheckNotifictionsReadAt
                 $notification->markAsRead();
             }
         }
+        if($request->query('notify-admin')){
+            $notification = auth('admin')->user()->unreadNotifications()
+            ->where('id',$request->query('notify-admin'))->first();
+            if($notification){
+                $notification->markAsRead();
+            }
+        }
         return $next($request);
     }
 }
