@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
 use App\Http\Controllers\Admin\Authorization\AuthorizationController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Contact\ContactController;
+use App\Http\Controllers\Admin\Profile\ProfileController;
 use App\Http\Controllers\Admin\Setting\SettingController;
 
 /*
@@ -64,6 +65,12 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
     // Admins Management
     Route::resource('admins',AdminController::class);
     Route::get('admins/status/{id}',[AdminController::class,'changeStatus'])->name('admins.changeStatus');
+    // Profile Management
+    Route::controller( ProfileController::class)->prefix('profile')
+    ->as('profile.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::post('/update','update')->name('update');
+    });
     // Settings Management
     Route::controller( SettingController::class)->prefix('setting')
     ->as('settings.')->group(function(){

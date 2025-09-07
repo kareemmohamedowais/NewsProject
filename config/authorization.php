@@ -17,6 +17,7 @@ return [
         'contacts'            =>'Managment Contacts',
         'authorizations'      =>'Managment Authorizations',
         'home'                =>'Managment Home',
+        'profile'                =>'Managment profile',
     ]
 ];
 
