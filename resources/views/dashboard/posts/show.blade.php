@@ -3,6 +3,10 @@
     show User
 @endsection
 
+@push('css')
+   {{-- toastr notification --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
 @section('content')
     <div class="d-flex justify-content-center">
         <div class="card-body shadow mb-4" style="max-width: 100ch">
@@ -116,15 +120,23 @@
 
                 </div>
                 @forelse ($post->comments as $comment )
-                <div class="notification alert alert-info">
-                    <strong><img src="{{ asset($comment->user->image) }}" width="50px" class="img-thumbnial rounded"> <a style="text-decoration: none" href="{{ route('admin.users.show' , $comment->user->id) }}">{{ $comment->user->name }}</a> : </strong> {{ $comment->comment }}.<br>
+                <div class="notification alert alert-info comment-box" id="comment-{{ $comment->id }}">
+                    <strong><img src="{{ asset($comment->user->image) }}" width="50px" class="img-thumbnial rounded">
+                    <a style="text-decoration: none" href="{{ route('admin.users.show' , $comment->user->id) }}">{{ $comment->user->name }}</a> : </strong> {{ $comment->comment }}.<br>
                     <strong style="color: red"> {{ $comment->created_at->diffForHumans() }}</strong>
                     <div class="float-right">
-                        <a href="{{ route('admin.posts.deleteComment' , $comment->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                        {{-- <a href="{{ route('admin.posts.deleteComment' , $comment->id) }}" class="btn btn-danger btn-sm">Delete</a> --}}
+                    <a href="javascript:void(0)"
+   data-id="{{ $comment->id }}"
+   class="btn btn-danger btn-sm delete-comment">
+   Delete
+</a>
+
+
                     </div>
                 </div>
                 @empty
-                       <div class="alert alert-info">
+                        <div class="alert alert-info">
                         No Comments yet!
                     </div>
                 @endforelse
@@ -139,3 +151,70 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+  {{--  toastr notification --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+$(document).on('click', '.delete-comment', function(e) {
+    e.preventDefault();
+
+    let commentId = $(this).data('id');
+    let commentBox = $("#comment-" + commentId); // استهدف الـ div بتاع التعليق
+
+    // if(confirm("Are you sure you want to delete this comment?")) {
+        $.ajax({
+            url: "{{ route('admin.posts.deleteComment', ':id') }}".replace(':id', commentId),
+            type: "DELETE",
+            data: {
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                if(response.status) {
+                    // امسح التعليق من الواجهة مع تأثير
+                    commentBox.fadeOut(500, function() {
+                        $(this).remove();
+                    });
+ // Display an info toast with no title
+                    toastr.success(response.msg,{timeOut: 5000})                }
+            },
+            error: function() {
+                alert("Something went wrong while deleting the comment.");
+            }
+        });
+    // }
+});
+</script>
+
+
+
+{{-- <script>
+        $(document).on('click', '#delete_btn', function(e) {
+            e.preventDefault();
+
+            var user_id = $(this).attr('user_id');
+
+            $.ajax({
+                url:"{{ route('users.delete') }}",
+                type:"POST",
+                data:{
+                    '_token':'{{ csrf_token() }}',
+                    'user_id':user_id,
+                },
+                success:function(data){
+                    $('.userRow'+user_id).remove();
+                    $('#alertSuccess').text(data.msg).show();
+                },
+                error:function(data){
+                    alert(data);
+                }
+            })
+        })
+    </script> --}}
+
+
+
+@endpush

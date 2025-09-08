@@ -162,8 +162,13 @@ class PostController extends Controller
         $comment = Comment::findOrFail($id);
         $comment->delete();
 
-        Session::flash('success' , 'Comment Deleted Successfuly');
-        return redirect()->back();
+        return response()->json([
+            'status'=>true,
+            'msg'=>'Comment deleted successfully',
+        ]);
+
+        // Session::flash('success' , 'Comment Deleted Successfuly');
+        // return redirect()->back();
     }
 
     public function changeStatus($id)

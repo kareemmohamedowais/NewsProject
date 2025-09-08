@@ -65,7 +65,7 @@
                 <!-- Comment Section -->
                 <div class="comment-section">
                     <!-- Comment Input -->
-                    @if ($MainPost->comment_able == true)
+                    @if (Auth::check() && $MainPost->comment_able == true)
 
                     <form id="commentForm" >
                     @csrf
