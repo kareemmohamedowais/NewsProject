@@ -66,6 +66,8 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
     Route::get('post/block/{id}',[PostController::class,'changeStatus'])->name('posts.changeStatus');
     Route::post('/posts/image/{id}/delete', [PostController::class,'deletePostImage'])->name('posts.image.delete');
     Route::delete('posts/comment/delete/{id}' ,      [PostController::class , 'deleteComment'])->name('posts.deleteComment');
+    Route::get('/posts/comments/{id}',[PostController::class ,'getComments'])->name('posts.getComments');
+
     // Admins Management
     Route::resource('admins',AdminController::class);
     Route::get('admins/status/{id}',[AdminController::class,'changeStatus'])->name('admins.changeStatus');

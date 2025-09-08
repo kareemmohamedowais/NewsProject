@@ -117,15 +117,24 @@
                     <div class="col-6">
                         <h2 class="mb-4">Comments</h2>
                     </div>
+            <button post-id="{{ $post->id }}" id="commentbtn_{{ $post->id }}" class="getComments" class="btn btn-info btn-sm" style="margin-left: 320px">
+                <i class="fas fa-comment"></i> Comments
+            </button>
+            <button style="display: none;margin-left: 280px;" post-id="{{ $post->id }}" id="hideCommentId_{{ $post->id }}" class="hideComments" class="btn btn-info btn-sm">
+                <i class="fas fa-comment"></i> Hide Comments
+            </button>
 
                 </div>
-                @forelse ($post->comments as $comment )
+                <div id="displayComments_{{ $post->id }}" class="comments" style="display: none;">
+
+                            <!-- Add more comments here for demonstration -->
+                </div>
+                {{-- @forelse ($post->comments as $comment )
                 <div class="notification alert alert-info comment-box" id="comment-{{ $comment->id }}">
                     <strong><img src="{{ asset($comment->user->image) }}" width="50px" class="img-thumbnial rounded">
                     <a style="text-decoration: none" href="{{ route('admin.users.show' , $comment->user->id) }}">{{ $comment->user->name }}</a> : </strong> {{ $comment->comment }}.<br>
                     <strong style="color: red"> {{ $comment->created_at->diffForHumans() }}</strong>
                     <div class="float-right">
-                        {{-- <a href="{{ route('admin.posts.deleteComment' , $comment->id) }}" class="btn btn-danger btn-sm">Delete</a> --}}
                     <a href="javascript:void(0)"
    data-id="{{ $comment->id }}"
    class="btn btn-danger btn-sm delete-comment">
@@ -139,7 +148,7 @@
                         <div class="alert alert-info">
                         No Comments yet!
                     </div>
-                @endforelse
+                @endforelse --}}
 
 
 
@@ -187,33 +196,162 @@ $(document).on('click', '.delete-comment', function(e) {
         });
     // }
 });
+
+    //     //    get post comments
+    //     $(document).on('click', '.getComments', function(e) {
+    //         e.preventDefault();
+    //         var post_id = $(this).attr('post-id');
+
+    //         $.ajax({
+    //             type: "GET",
+    //             url: '{{ route('admin.posts.getComments', ':post_id') }}'.replace(':post_id', post_id),
+    //             success: function(response) {
+    //                 $('#displayComments_'+post_id).empty();
+
+
+    //                 $.each(response.data, function(indexInArray, comment) {
+    //                     $('#displayComments_'+post_id).append(`
+    //     <div class="notification alert alert-info comment-box" id="comment-${comment.id}">
+    //         <strong>
+    //             <img src="http://127.0.0.1:8000/uploads/${comment.user.image}" width="50px" class="img-thumbnail rounded">
+    //             <a style="text-decoration: none" href="/admin/users/${comment.user.id}">
+    //                 ${comment.user.name}
+    //             </a> :
+    //         </strong>
+    //         ${comment.comment}.<br>
+
+    //         <strong style="color: red">${comment.created_at}</strong>
+
+    //         <div class="float-right">
+    //             <a href="javascript:void(0)"
+    //                data-id="${comment.id}"
+    //                class="btn btn-danger btn-sm delete-comment">
+    //                Delete
+    //             </a>
+    //         </div>
+    //     </div>
+    // `).show();
+    //                 });
+    //                 $('#commentbtn_'+post_id).hide();
+    //                 $('#hideCommentId_'+post_id).show();
+    //             }
+    //         });
+
+    //     });
+
+        // hide post comments
+        $(document).on('click',  '.hideComments' , function(e){
+            e.preventDefault();
+            var post_id = $(this).attr('post-id');
+
+            // 1- hide comments
+            $('#displayComments_'+post_id).hide();
+            // 2- hide (hide comment btn)
+            $('#hideCommentId_'+post_id).hide();
+
+            // 3- Apper btn (comment)
+            $('#commentbtn_'+post_id).show();
+
+        });
+
+// get post comments
+$(document).on('click', '.getComments', function(e) {
+    e.preventDefault();
+    var post_id = $(this).attr('post-id');
+
+    $.ajax({
+        type: "GET",
+        url: '{{ route('admin.posts.getComments', ':post_id') }}'.replace(':post_id', post_id),
+        success: function(response) {
+            var commentsContainer = $('#displayComments_'+post_id);
+            commentsContainer.empty();
+
+            // نخزن كل التعليقات في data attribute
+            var allComments = response.data;
+            commentsContainer.data('allComments', allComments);
+
+            // نظهر أول 5 بس
+            renderLimitedComments(commentsContainer, 5);
+
+            // لو في اكتر من 5 يظهر زرار Show More
+            if(allComments.length > 5){
+                commentsContainer.append(`
+                    <div class="text-center mt-2 toggle-buttons">
+                        <button class="btn btn-link show-more" data-post="${post_id}">Show More</button>
+                        <button class="btn btn-link show-less" data-post="${post_id}" style="display:none;">Show Less</button>
+                    </div>
+                `);
+            }
+
+            commentsContainer.show();
+            $('#commentbtn_'+post_id).hide();
+            $('#hideCommentId_'+post_id).show();
+        }
+    });
+});
+
+// زرار Show More
+$(document).on('click', '.show-more', function(){
+    var post_id = $(this).data('post');
+    var commentsContainer = $('#displayComments_'+post_id);
+    var allComments = commentsContainer.data('allComments');
+
+    commentsContainer.find('.comment-box').remove(); // امسح القديم
+    $.each(allComments, function(index, comment) {
+        commentsContainer.prepend(renderComment(comment));
+    });
+
+    $(this).hide();
+    commentsContainer.find('.show-less').show();
+});
+
+// زرار Show Less
+$(document).on('click', '.show-less', function(){
+    var post_id = $(this).data('post');
+    var commentsContainer = $('#displayComments_'+post_id);
+
+    renderLimitedComments(commentsContainer, 5);
+
+    $(this).hide();
+    commentsContainer.find('.show-more').show();
+});
+
+// دالة عرض 5 تعليقات فقط
+function renderLimitedComments(container, limit){
+    var allComments = container.data('allComments');
+    container.find('.comment-box').remove(); // امسح القديم
+    $.each(allComments.slice(0, limit), function(index, comment) {
+        container.prepend(renderComment(comment));
+    });
+}
+
+// دالة توليد الكومنت
+function renderComment(comment){
+    return `
+        <div class="notification alert alert-info comment-box" id="comment-${comment.id}">
+            <strong>
+                <img src="${comment.user.image}" width="50px" class="img-thumbnail rounded">
+                <a style="text-decoration: none" href="/admin/users/${comment.user.id}">
+                    ${comment.user.name}
+                </a> :
+            </strong>
+            ${comment.comment}.<br>
+            <strong style="color: red">${comment.created_at}</strong>
+            <div class="float-right">
+                <a href="javascript:void(0)"
+                   data-id="${comment.id}"
+                   class="btn btn-danger btn-sm delete-comment">
+                   Delete
+                </a>
+            </div>
+        </div>
+    `;
+}
+
 </script>
 
 
 
-{{-- <script>
-        $(document).on('click', '#delete_btn', function(e) {
-            e.preventDefault();
-
-            var user_id = $(this).attr('user_id');
-
-            $.ajax({
-                url:"{{ route('users.delete') }}",
-                type:"POST",
-                data:{
-                    '_token':'{{ csrf_token() }}',
-                    'user_id':user_id,
-                },
-                success:function(data){
-                    $('.userRow'+user_id).remove();
-                    $('#alertSuccess').text(data.msg).show();
-                },
-                error:function(data){
-                    alert(data);
-                }
-            })
-        })
-    </script> --}}
 
 
 

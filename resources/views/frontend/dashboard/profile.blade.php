@@ -254,6 +254,7 @@
             $('#commentbtn_'+post_id).show();
 
         });
+
 </script>
 @endpush
 

@@ -187,4 +187,36 @@ class PostController extends Controller
         }
         return redirect()->back();
     }
+    public function getComments($id){
+        // $post = Post::findOrFail($id);
+        // $comments = $post->comments()->get();
+
+    $comments = Comment::with('user')
+        ->where('post_id', $id)
+        ->latest()
+        ->get()
+        ->map(function($comment){
+            return [
+                'id' => $comment->id,
+                'comment' => $comment->comment,
+                'created_at' => $comment->created_at->diffForHumans(), // 👍
+                'user' => [
+                    'id' => $comment->user->id,
+                    'name' => $comment->user->name,
+                    // 'image' => url($comment->user->image),
+                    'image' => asset($comment->user->image),
+                ]
+            ];
+        });
+        if(!$comments){
+            return response()->json([
+                'data'=>null,
+                'msg' =>'no comments'
+            ]);
+        }
+        return response()->json([
+            'data'=>$comments,
+            'msg' =>'contain comments'
+        ]);
+    }
 }
