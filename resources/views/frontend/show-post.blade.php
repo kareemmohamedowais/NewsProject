@@ -63,6 +63,7 @@
                 </div>
 
                 <!-- Comment Section -->
+                @if (Auth::guard('web')->user()->status != 0)
                 <div class="comment-section">
                     <!-- Comment Input -->
                     @if (Auth::check() && $MainPost->comment_able == true)
@@ -104,6 +105,7 @@
                     <button id="showMoreBtn" class="show-more-btn">Show more</button>
                     @endif
                 </div>
+                @endif
 
                 <!-- Related News -->
                 <div class="sn-related">

@@ -47,7 +47,7 @@ Route::group([
     Route::match(['post','get'],'search',SearchController::class)->name('search');
 
     // dashboard controller routes (profile page)
-    Route::prefix('Acount')->name('dashboard.')->middleware('auth','verified')
+    Route::prefix('Acount')->name('dashboard.')->middleware(['auth','verified','check-user-status'])
     ->group(function(){
         Route::controller(ProfileController::class)->group(function(){
             Route::get('/profile','index')->name('profile');
@@ -75,6 +75,11 @@ Route::group([
             Route::get('/deleteAll','deleteAll')->name('notification.deleteAll');
         });
     });
+
+    Route::get('wait' , function(){
+        return view('frontend.wait');
+    })->name('wait');
+
 });
 
 
