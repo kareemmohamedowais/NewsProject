@@ -63,7 +63,13 @@
                 </div>
             </li>
             @endcan
-
+            @can('notifications')
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.notifications.index') }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Notifications</span></a>
+            </li>
+            @endcan
             <!-- Divider -->
             <hr class="sidebar-divider">
 

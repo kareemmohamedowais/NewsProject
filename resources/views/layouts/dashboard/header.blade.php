@@ -98,7 +98,8 @@
                         </li>
 
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        @can('notifications')
+<li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
@@ -122,13 +123,14 @@
                                         <div class="small text-gray-500">{{ $notify->data['date'] }}</div>
                                     </div>
                                 </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="{{ route('admin.notifications.index') }}">Show AllMessages</a>
                                 @empty
-                                    <p>no Contacts</p>
+                                    <p class="dropdown-item text-center small text-gray-500">no Contacts</p>
                                 @endforelse
 
-                                {{-- <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a> --}}
                             </div>
                         </li>
+                        @endcan
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -151,7 +153,7 @@
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>
-                                
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

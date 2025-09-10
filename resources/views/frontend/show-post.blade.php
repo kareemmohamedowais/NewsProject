@@ -63,10 +63,10 @@
                 </div>
 
                 <!-- Comment Section -->
-                @if (Auth::guard('web')->user()->status != 0)
+                @if (Auth::check() && Auth::guard('web')->user()->status != 0)
                 <div class="comment-section">
                     <!-- Comment Input -->
-                    @if (Auth::check() && $MainPost->comment_able == true)
+                    @if ( $MainPost->comment_able == true)
 
                     <form id="commentForm" >
                     @csrf

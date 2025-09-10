@@ -19,6 +19,7 @@ return [
         'authorizations'      =>'Managment Authorizations',
         'home'                =>'Managment Home',
         'profile'                =>'Managment profile',
+        'notifications'                =>'Managment notifications',
     ]
 ];
 

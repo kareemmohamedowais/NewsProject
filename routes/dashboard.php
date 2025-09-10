@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
 use App\Http\Controllers\Admin\Authorization\AuthorizationController;
 use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
+use App\Http\Controllers\Admin\Notification\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +90,13 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
         Route::get('/','index')->name('index');
         Route::get('/show/{id}','show')->name('show');
         Route::delete('/destroy/{id}','destroy')->name('destroy');
+    });
+    // notifications Management
+    Route::controller( NotificationController::class)->prefix('notifications')
+    ->as('notifications.')->group(function(){
+        Route::get('/','index')->name('index');
+        Route::get('/deleteAll','deleteAll')->name('deleteAll');
+        Route::get('/destroy/{id}','destroy')->name('destroy');
     });
 
 
