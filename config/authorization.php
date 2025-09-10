@@ -3,7 +3,7 @@
 
 return [
     'permissions'=>[
-        // 'posts'             =>'Managment Posts',
+        'posts'               =>'Managment Posts',
         'create_posts'        =>'create Posts',
         'edit_posts'          =>'edit Posts',
         'update_posts'        =>'update Posts',

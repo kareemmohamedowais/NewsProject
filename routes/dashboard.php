@@ -6,14 +6,15 @@ use App\Http\Controllers\Admin\Post\PostController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Admin\AdminController;
+use App\Http\Controllers\Admin\GereralSearchController;
 use App\Http\Controllers\Admin\Contact\ContactController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
 use App\Http\Controllers\Admin\Setting\SettingController;
 use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Notification\NotificationController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
 use App\Http\Controllers\Admin\Authorization\AuthorizationController;
 use App\Http\Controllers\Admin\Auth\Password\ForgetPasswordController;
-use App\Http\Controllers\Admin\Notification\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,9 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
         Route::get('/deleteAll','deleteAll')->name('deleteAll');
         Route::get('/destroy/{id}','destroy')->name('destroy');
     });
+    //Generl Search Routes
+    Route::get('search', [GereralSearchController::class , 'search'])->name('search');
+
 
 
 });
