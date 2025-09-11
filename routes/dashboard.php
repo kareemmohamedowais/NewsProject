@@ -50,6 +50,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
+    Route::fallback(function(){
+        return response()->view('errors.404');
+    });
+
     // Home
     Route::get('dashboard',[HomeController::class,'index'])->name('index');
 

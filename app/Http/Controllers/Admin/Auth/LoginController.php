@@ -26,17 +26,21 @@ public function checkAuth(Request $request)
         ]);
 
         if (Auth::guard('admin')->attempt([
-        'email' => $credentials['email'],
-        'password' => $credentials['password'],
-        ],
-        $request->filled('remember'))) {
-            $request->session()->regenerate();
+            'email' => $request->email,
+            'password' => $request->password
+        ], $request->remember)) {
+            // if admin has permession home -> redirect to home , else redire the first page in his permessions
+            // $permissions = Auth::guard('admin')->user()->authorization->permissions;
+            // $first_permession = $permissions[0];
+            // return $permissions;
+
+            // if (!in_array('home', $permissions)) {
+                // return redirect()->intended('admin/' . $first_permession);
+            // }
             return redirect()->intended(route('admin.index'));
         }
+        return redirect()->back()->withErrors(['email' => 'credentials dose not match!']);
 
-        return back()->withErrors([
-            'email' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
-        ])->onlyInput('email');
     }
     public function logout(Request $request)
     {

@@ -21,6 +21,10 @@ class PostController extends Controller
             }
         ])->whereSlug($slug)->first();
 
+        if (!$MainPost) {
+            abort(404);
+        }
+        
         $category = $MainPost->category;
         $posts_belongsto_category = $category->posts()->active()->select('id', 'slug', 'title')->limit(5)->get();
 

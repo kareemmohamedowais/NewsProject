@@ -7,7 +7,7 @@ return [
         'create_posts'        =>'create Posts',
         'edit_posts'          =>'edit Posts',
         'update_posts'        =>'update Posts',
-        'show_posts'        =>'show Posts',
+        'show_posts'          =>'show Posts',
         'delete_posts'        =>'delete Posts',
         'index_posts'         =>'index Posts',
         'change_status_posts' =>'changestatusposts Posts',

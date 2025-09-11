@@ -22,11 +22,15 @@ use App\Http\Controllers\Frontend\Dashboard\ProfileController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::redirect('/', '/home');
 
 
 Route::group([
     'as' => 'frontend.'
 ], function () {
+    Route::fallback(function(){
+        return response()->view('errors.404');
+    });
     Route::get('/home', [HomeController::class, 'index'])->name('index');
     Route::post('news-subscibe',[NewsSubscriberController::class,'store'])->name('news.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
