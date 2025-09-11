@@ -2,8 +2,9 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CheckNotifictionsReadAt;
 use App\Http\Middleware\CheckUserStatus;
+use App\Http\Middleware\CheckAdminStatus;
+use App\Http\Middleware\CheckNotifictionsReadAt;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -69,5 +70,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // 'ReadAt'=>CheckNotifictionsReadAt::class,
         'check-user-status'=>CheckUserStatus::class,
+        'checkAdminStatus'=>CheckAdminStatus::class,
+
     ];
 }

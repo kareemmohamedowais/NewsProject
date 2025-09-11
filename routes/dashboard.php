@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Contact\ContactController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
 use App\Http\Controllers\Admin\Setting\SettingController;
 use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Setting\RelatedSiteController;
 use App\Http\Controllers\Admin\Notification\NotificationController;
 use App\Http\Controllers\Admin\Auth\Password\RestPasswordController;
 use App\Http\Controllers\Admin\Authorization\AuthorizationController;
@@ -49,7 +50,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 
 
-Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],function(){
+Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>['auth:admin','checkAdminStatus']],function(){
     Route::fallback(function(){
         return response()->view('errors.404');
     });
@@ -106,7 +107,13 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'auth:admin'],funct
     //Generl Search Routes
     Route::get('search', [GereralSearchController::class , 'search'])->name('search');
 
+    //RelatedSite Routes
+    Route::resource('related-site' , RelatedSiteController::class);
 
 
 });
+//admin wait page
+Route::get('admin/wait' , function(){
+return view('dashboard.wait');
+})->name('admin.wait');
 

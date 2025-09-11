@@ -9,5 +9,12 @@ class RelatedNewsSite extends Model
 {
     use HasFactory;
     protected $table = 'related_sites';
-    protected $fillable = ['anme','url'];
+    protected $fillable = ['name','url'];
+    public static function filterRequest() : array
+    {
+        return [
+            'name'=>['required' , 'string' , 'max:40'],
+            'url'=>['url' , 'required'],
+        ];
+    }
 }
