@@ -99,16 +99,31 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request,$id)
-    {
-        $user = User::findOrFail($id);
-        ImageManager::deleteImageFromLocal($user->image);
+    public function destroy($id)
+{
+    $user = User::findOrFail($id);
+
+    try {
+        DB::beginTransaction();
+
+        // حذف الصورة من السيرفر لو موجودة
+        if ($user->image) {
+            ImageManager::deleteImageFromLocal($user->image);
+        }
+
         $user->delete();
 
-        Session::flash('success','User Deleted');
+        DB::commit();
+
+        Session::flash('success', 'User Deleted Successfully!');
         return redirect()->route('admin.users.index');
 
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->withErrors(['error' => $e->getMessage()]);
     }
+}
+
 
     // bolck and active user
     public function changeStatus($id){
