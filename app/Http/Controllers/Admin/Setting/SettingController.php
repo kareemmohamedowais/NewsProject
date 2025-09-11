@@ -22,9 +22,9 @@ class SettingController extends Controller
     {
         try {
             DB::beginTransaction();
-            $current_setting = Setting::findOrFail($request->setting_id);
+            $current_setting = Setting::findOrFail($request->setting);
             $setting = $current_setting->update($request->except(
-                ['_token',  'setting_id', 'logo', 'favicon']));
+                ['_token',  'setting', 'logo', 'favicon']));
 
             if ($request->hasFile('logo')) {
                 $this->updateLogo($request, $current_setting);

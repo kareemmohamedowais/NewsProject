@@ -1,13 +1,10 @@
     @extends('layouts.dashboard.app')
     @section('title')
-        contacts
+        Contacts
     @endsection
     @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Contact Table</h1>
 
 
         <!-- DataTales Example -->
@@ -58,6 +55,7 @@
                             <td>
                                 <a href="javascript:void(0)" onclick="if(confirm('Do you want to delete the contact')){document.getElementById('delete_contact_{{ $contact->id }}').submit()} return false"><i class="fa fa-trash"></i></a>
                                 <a href="{{ route('admin.contacts.show' , [$contact->id, 'page'=>request()->page]) }}" ><i class="fa fa-eye"></i></a>
+                            
                             </td>
                         </tr>
 

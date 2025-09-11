@@ -27,6 +27,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
+                            <label for="title">Title</label>
+
                             <input type="text" value="{{ @old('title') }}" name="title" placeholder="Enter Post Title"
                                 class="form-control">
                             @error('title')
@@ -38,6 +40,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
+                            <label for="small_desc">small_desc</label>
                             <textarea name="small_desc" placeholder="Enter Post Small Description" class="form-control">{{ old('small_desc') }}</textarea>
                             @error('small_desc')
                                 <strong class="text-danger">{{ $message }}</strong>
@@ -49,6 +52,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
+                            <label for="desc">Description</label>
                             <textarea id="postContent" name="desc" placeholder="Enter Description" class="form-control">{{ old('desc') }}</textarea>
                             @error('desc')
                                 <strong class="text-danger">{{ $message }}</strong>
@@ -60,6 +64,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
+                            <label for="postImage">Post Image</label>
                             <input type="file" multiple id="postImage" name="images[]" class="form-control">
                             @error('images')
                                 <strong class="text-danger">{{ $message }}</strong>
@@ -70,6 +75,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
+                            <label for="status">Status</label>
                             <select name="status" class="form-control">
                                 <option disabled {{ old('status', $post->status ?? null) === null ? 'selected' : '' }}>
                                     Select Status
@@ -88,6 +94,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
+                            <label for="category_id">Category</label>
                             <select name="category_id" class="form-control">
                                 <option disabled {{ old('category_id', $post->category_id ?? null) ? '' : 'selected' }}>
                                     Select Category
@@ -106,6 +113,7 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
+                            <label for="comment_able">Comment Able</label>
                             <select name="comment_able" class="form-control">
                                 <option disabled {{ old('comment_able') === null ? 'selected' : '' }}>Select Comment Able
                                     Status</option>

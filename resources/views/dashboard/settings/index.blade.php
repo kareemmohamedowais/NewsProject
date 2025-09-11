@@ -151,7 +151,7 @@
                 </div>
             </div>
             <br>
-            <input name="setting_id" value="{{ $getSetting->id }}" hidden>
+            <input name="setting" value="{{ $getSetting->id }}" hidden>
             <button type="submit" class="btn btn-primary"> Update Setting</button>
         </div>
 
