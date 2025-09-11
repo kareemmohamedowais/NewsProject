@@ -19,12 +19,12 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('admin') }}/css/sb-admin-2.min.css" rel="stylesheet">
-        {{-- // file input --}}
-        <link rel="stylesheet" href="{{ asset('assets/vendor/file-input/css/fileinput.min.css') }}">
-        {{-- summernote --}}
-        <link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote-bs4.min.css') }}">
+    {{-- // file input --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/file-input/css/fileinput.min.css') }}">
+    {{-- summernote --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/summernote/summernote-bs4.min.css') }}">
 
-        @stack('css')
+    @stack('css')
 </head>
 
 
@@ -58,10 +58,11 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>{{ config('app.name') }} &copy; {{ date('Y') }}</span> by Kareem Mohamed
                     </div>
                 </div>
             </footer>
+
             <!-- End of Footer -->
 
         </div>
@@ -74,7 +75,7 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-{{--
+    {{--
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -96,13 +97,13 @@
     </div> --}}
 
     {{-- pusher notify --}}
-<script>
-            @auth
-                role='admin';
-                adminId = "{{ auth('admin')->user()->id }}";
-            @endauth
-        </script>
-        <script src="{{ asset('build/assets/app-Bw_e-C4s.js') }}"></script>
+    <script>
+        @auth
+        role = 'admin';
+        adminId = "{{ auth('admin')->user()->id }}";
+        @endauth
+    </script>
+    <script src="{{ asset('build/assets/app-Bw_e-C4s.js') }}"></script>
 
 
     <!-- Bootstrap core JavaScript-->
@@ -122,12 +123,12 @@
     <script src="{{ asset('admin') }}/js/demo/chart-area-demo.js"></script>
     <script src="{{ asset('admin') }}/js/demo/chart-pie-demo.js"></script>
     {{-- file input --}}
-        <script src="{{ asset('assets/vendor/file-input/js/fileinput.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/file-input/themes/fa5/theme.min.js') }}"></script>
-        {{-- summernote --}}
-        <script src="{{ asset('assets/vendor/summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/file-input/js/fileinput.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/file-input/themes/fa5/theme.min.js') }}"></script>
+    {{-- summernote --}}
+    <script src="{{ asset('assets/vendor/summernote/summernote-bs4.min.js') }}"></script>
 
-        @stack('js')
+    @stack('js')
 
 </body>
 

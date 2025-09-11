@@ -20,7 +20,7 @@
                   </select>
               </div>
           </div>
-          <div class="col-1">
+          <div class="col-2">
               <div class="from-group">
                   <select name="limit_by"  class="form-control">
                       <option selected disabled value="">Limit</option>
@@ -39,7 +39,7 @@
                   </select>
               </div>
           </div>
-          <div class="col-2">
+          <div class="col-3">
               <div class="from-group">
                  <input  class="form-control" name="keyword"  placeholder="Search Here...">
               </div>
@@ -50,13 +50,7 @@
               </div>
           </div>
 
-          <div class="col-2">
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-category">
-                   Create Category
-                  </button>
-            </div>
-          </div>
+
       </div>
     </form>
   </div>

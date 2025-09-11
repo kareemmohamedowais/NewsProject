@@ -13,7 +13,8 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      */
 
-        public function __construct(){
+    public function __construct()
+    {
         $this->middleware('can:categories');
     }
     public function index()
@@ -46,8 +47,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+            'status' => 'nullable|in:0,1',
+        ]);
+
         $category = Category::create($request->except('_token'));
-        if(!$category){
+        if (!$category) {
             Session::flash('error', ' Try again latter!');
             return redirect()->route('admin.categories.index');
         }
@@ -76,16 +82,27 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validation
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,
+            'status' => 'nullable|in:0,1',
+        ]);
+
+        // Find category
         $category = Category::findOrFail($id);
-        $category = $category->update($request->except(['_token' , '_method']));
-        if(!$category){
-            Session::flash('error', ' Try Again Latter!');
+
+        // Update
+        $updated = $category->update($request->except(['_token', '_method']));
+
+        if (!$updated) {
+            Session::flash('error', 'Try Again Later!');
             return redirect()->route('admin.categories.index');
         }
 
-        Session::flash('success', 'Category Deleted Suuccessfully!');
+        Session::flash('success', 'Category Updated Successfully!');
         return redirect()->route('admin.categories.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -93,11 +110,16 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $category = Category::findOrFail($id);
-        $category->delete();
 
-        Session::flash('success', 'Category Deleted Suuccessfully!');
+        if ($category->delete()) {
+            Session::flash('success', 'Category Deleted Successfully!');
+        } else {
+            Session::flash('error', 'Failed to delete category, please try again later!');
+        }
+
         return redirect()->route('admin.categories.index');
     }
+
 
     public function changeStatus($id)
     {
@@ -107,12 +129,12 @@ class CategoryController extends Controller
             $category->update([
                 'status' => 0,
             ]);
-            Session::flash('success', 'category Blocked Suuccessfully!');
+            Session::flash('success', 'Category Blocked Successfully!!');
         } else {
             $category->update([
                 'status' => 1,
             ]);
-            Session::flash('success', 'category Active Suuccessfully!');
+            Session::flash('success', 'Category Activated Successfully!!');
         }
         return redirect()->back();
     }

@@ -6,9 +6,6 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-        <p class="mb-4">DataTables is a third party plugin that is </a>.</p>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -17,6 +14,23 @@
             </div>
 
             @include('dashboard.categories.filter.filter')
+            <div class="col-4">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-category">
+                        Create Category
+                    </button>
+                </div>
+            </div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             {{-- table data --}}
             <div class="card-body">
                 <div class="table-responsive">
