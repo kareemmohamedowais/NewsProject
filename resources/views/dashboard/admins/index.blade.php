@@ -1,18 +1,16 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Users
+    Admins
 @endsection
 @section('content')
    <!-- Begin Page Content -->
    <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Admin Managment</h1>
-
+  
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Admin Managment</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Admins Managment</h6>
         </div>
 
         @include('dashboard.admins.filter.filter')
