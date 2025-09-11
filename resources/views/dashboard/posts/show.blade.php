@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    show User
+    Show Post
 @endsection
 
 @push('css')
@@ -117,14 +117,29 @@
                     <div class="col-6">
                         <h2 class="mb-4">Comments</h2>
                     </div>
-            <button post-id="{{ $post->id }}" id="commentbtn_{{ $post->id }}" class="getComments" class="btn btn-info btn-sm" style="margin-left: 320px">
+            {{-- <button post-id="{{ $post->id }}" id="commentbtn_{{ $post->id }}" class="getComments" class="btn btn-info btn-sm" style="margin-left: 320px">
                 <i class="fas fa-comment"></i> Comments
             </button>
             <button style="display: none;margin-left: 280px;" post-id="{{ $post->id }}" id="hideCommentId_{{ $post->id }}" class="hideComments" class="btn btn-info btn-sm">
                 <i class="fas fa-comment"></i> Hide Comments
-            </button>
+            </button> --}}
 
+            <div class="btn-group mt-2" role="group" style="margin-left: 290px">
+    <button post-id="{{ $post->id }}"
+            id="commentbtn_{{ $post->id }}"
+            class="btn btn-sm btn-primary getComments">
+        <i class="fas fa-comments"></i> Show Comments
+    </button>
+
+    <button post-id="{{ $post->id }}"
+            id="hideCommentId_{{ $post->id }}"
+            class="btn btn-sm btn-secondary hideComments"
+            style="display: none;">
+        <i class="fas fa-eye-slash"></i> Hide Comments
+    </button>
+</div>
                 </div>
+            <br><br>
                 <div id="displayComments_{{ $post->id }}" class="comments" style="display: none;">
 
                             <!-- Add more comments here for demonstration -->

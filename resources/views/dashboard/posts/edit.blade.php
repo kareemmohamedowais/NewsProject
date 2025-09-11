@@ -10,7 +10,9 @@
             @method('PUT')
 
             <div class="card-body shadow mb-4 col-10">
-                <a style="margin-left: 90ch" class="btn btn-primary" href="{{ route('admin.posts.index') }}" >Show Posts</a>
+                <a  class="btn btn-primary" href="{{ route('admin.posts.index') }}" >Show Posts</a>
+                <br>
+                <br>
                 <h2>Update Post</h2>
 
                 @if (session()->has('errors'))

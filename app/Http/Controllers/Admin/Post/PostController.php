@@ -55,8 +55,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::active()->select('id' , 'name')->get();
-        return view('dashboard.posts.create' , ['categories'=>$categories]);
+        // $categories = Category::active()->select('id' , 'name')->get();
+        // /categories from ViewServiceProvider
+        return view('dashboard.posts.create' );
     }
 
     /**
@@ -67,7 +68,8 @@ class PostController extends Controller
         $request->validated();
         try {
             DB::beginTransaction();
-            $post = Auth::guard('admin')->user()->posts()->create($request->except(['_token', 'images']));
+            $post = Auth::guard('admin')->user()->posts()
+            ->create($request->except(['_token', 'images']));
 
             ImageManager::uploadImages($request, $post);
 
@@ -76,7 +78,7 @@ class PostController extends Controller
             Cache::forget('latest_posts');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['erorrs', $e->getMessage()]);
+            return redirect()->back()->withErrors(['errors', $e->getMessage()]);
         }
 
         Session::flash('success', 'Post Created Successfuly!');
@@ -88,7 +90,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::with('comments')->findOrFail($id);
+        $post = Post::with(['comments.user','images','user','admin','category'])
+        ->findOrFail($id);
         return view('dashboard.posts.show' , compact('post'));
     }
 
@@ -158,18 +161,26 @@ class PostController extends Controller
         return redirect()->route('admin.posts.index');
     }
     public function deleteComment($id)
-    {
+{
+    try {
         $comment = Comment::findOrFail($id);
+
+
         $comment->delete();
 
         return response()->json([
-            'status'=>true,
-            'msg'=>'Comment deleted successfully',
+            'status' => true,
+            'msg'    => 'Comment deleted successfully',
+            'id'     => $comment->id
         ]);
-
-        // Session::flash('success' , 'Comment Deleted Successfuly');
-        // return redirect()->back();
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => false,
+            'msg'    => 'Something went wrong: ' . $e->getMessage(),
+        ], 500);
     }
+}
+
 
     public function changeStatus($id)
     {
@@ -187,10 +198,8 @@ class PostController extends Controller
         }
         return redirect()->back();
     }
-    public function getComments($id){
-        // $post = Post::findOrFail($id);
-        // $comments = $post->comments()->get();
-
+    public function getComments($id)
+{
     $comments = Comment::with('user')
         ->where('post_id', $id)
         ->latest()
@@ -199,24 +208,29 @@ class PostController extends Controller
             return [
                 'id' => $comment->id,
                 'comment' => $comment->comment,
-                'created_at' => $comment->created_at->diffForHumans(), // 👍
+                'created_at' => $comment->created_at->diffForHumans(),
+                'created_date' => $comment->created_at->format('Y-m-d H:i'),
                 'user' => [
                     'id' => $comment->user->id,
                     'name' => $comment->user->name,
-                    // 'image' => url($comment->user->image),
-                    'image' => asset($comment->user->image),
+                    'image' => $comment->user->image
+                        ? asset($comment->user->image)
+                        : asset('images/default-user.png'),
                 ]
             ];
         });
-        if(!$comments){
-            return response()->json([
-                'data'=>null,
-                'msg' =>'no comments'
-            ]);
-        }
+
+    if ($comments->isEmpty()) {
         return response()->json([
-            'data'=>$comments,
-            'msg' =>'contain comments'
+            'data' => [],
+            'msg'  => 'no comments'
         ]);
     }
+
+    return response()->json([
+        'data' => $comments,
+        'msg'  => 'contain comments'
+    ]);
+}
+
 }

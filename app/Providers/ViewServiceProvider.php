@@ -29,11 +29,10 @@ class ViewServiceProvider extends ServiceProvider
         //share related sites
         $related_sites = RelatedNewsSite::select('name','url')->get();
         //share categories
-        $categories = Category::select('id','slug','name')->get();
+        $categories = Category::active()->select('id','slug','name')->get();
         view()->share([
             'related_sites'=>$related_sites,
             'categories'=>$categories,
-            
         ]);
 
 
