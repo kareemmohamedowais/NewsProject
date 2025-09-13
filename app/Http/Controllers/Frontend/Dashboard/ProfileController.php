@@ -20,7 +20,11 @@ class ProfileController extends Controller
     //
 
     public function index(){
-        $posts = Post::active()->with('images')->where('user_id',auth()->user()->id)->latest()->get();
+        $posts = Post::active()
+        ->with('images')
+        ->where('user_id',auth()->user()->id)
+        ->latest()
+        ->get();
         // طريقه اخري
         // $posts = auth()->user()->posts()->active()->with('images')->get();
         return view('frontend.dashboard.profile',compact('posts'));
@@ -139,7 +143,7 @@ class ProfileController extends Controller
         // $post = Post::findOrFail($id);
         // $comments = $post->comments()->get();
 
-        $comments = Comment::with(['user'])->where('post_id',$id)->get();
+        $comments = Comment::with(['user'])->where('post_id',$id)->limit(5)->get();
         if(!$comments){
             return response()->json([
                 'data'=>null,

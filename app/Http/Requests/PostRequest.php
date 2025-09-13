@@ -19,18 +19,26 @@ class PostRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
-        return [
+        $rules = [
             'title'=>['required','string','min:3','max:50'],
-            'small_desc'=>['required','string','min:3','max:250'],
+            // 'small_desc'=>['required','string','min:3','max:250'],
             'desc'=>['required','min:10'],
             'category_id'=>['required','exists:categories,id'],
             'comment_able'=>'in:on,off,1,0',
-            'images'=>'required',
+            // 'images'=>'required',
             'images.*'=>'image|mimes:jpeg,jpg,gif,png',
             'status'=>'nullable|in:1,0',
         ];
+
+        if(in_array($this->method() , ['PUT' , 'PATCH'])){
+            $rules['images']              =['nullable' ];
+        }else{
+            $rules['images']              =['required' ];
+
+        }
+        return $rules;
     }
 // to return custom message
     public function messages()
@@ -41,10 +49,10 @@ class PostRequest extends FormRequest
         'title.min'            => 'The title must be at least 3 characters.',
         'title.max'            => 'The title may not be greater than 50 characters.',
 
-        'small_desc.required'  => 'The short description is required.',
-        'small_desc.string'    => 'The short description must be a valid string.',
-        'small_desc.min'       => 'The short description must be at least 3 characters.',
-        'small_desc.max'       => 'The short description may not be greater than 250 characters.',
+        // 'small_desc.required'  => 'The short description is required.',
+        // 'small_desc.string'    => 'The short description must be a valid string.',
+        // 'small_desc.min'       => 'The short description must be at least 3 characters.',
+        // 'small_desc.max'       => 'The short description may not be greater than 250 characters.',
 
         'desc.required'        => 'The description is required.',
         'desc.min'             => 'The description must be at least 10 characters.',

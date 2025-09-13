@@ -1,8 +1,18 @@
 @extends('layouts.frontend.app')
 
+@section('title')
+    Settings
+@endsection
+
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item active">Settings</li>
+@endsection
+
 @section('body')
     <!-- Dashboard Start-->
-
+    <br>
+    <br>
     <div class="dashboard container">
         <aside class="col-md-3 nav-sticky dashboard-sidebar">
             <!-- User Info Section -->

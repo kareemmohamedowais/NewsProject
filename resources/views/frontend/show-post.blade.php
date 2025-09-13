@@ -37,7 +37,7 @@
                     <div class="carousel-inner">
                     @foreach ($MainPost->images as $image)
                     <div class="carousel-item @if ($loop->index == 0 ) active @endif">
-                        <img src="{{ asset( $MainPost->images->first()->path )}}" class="d-block w-100" alt="First Slide">
+                        <img src="{{ asset( $image->path )}}" class="d-block w-100" alt="First Slide">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>{{ $MainPost->title }}</h5>
 
@@ -90,7 +90,7 @@
                     <div class="comments">
                         @foreach ($MainPost->comments as $comment)
                         <div class="comment">
-                            <img src="{{ $comment->user->image }}" alt="User Image" class="comment-img" />
+                            <img src="{{ asset($comment->user->image) }}" alt="User Image" class="comment-img" />
                             <div class="comment-content">
                                 <span class="username">{{ $comment->user->name }}</span>
                                 <p class="comment-text">{{ $comment->comment }}</p>
@@ -265,7 +265,7 @@
                 type:'GET',
                 success:function(response) {
                     $('.comments').empty();
-                    $.each(response, function(index, comment) {
+                    $.each(response.data, function(index, comment) {
                         $('.comments').append(`
                         <div class="comment">
                             <img src="${comment.user.image}" alt="User Image" class="comment-img" />

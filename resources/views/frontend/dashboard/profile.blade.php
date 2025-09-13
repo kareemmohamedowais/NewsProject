@@ -3,8 +3,14 @@
 @section('title')
   Profile
 @endsection
+@section('breadcrumb')
+@parent
+<li class="breadcrumb-item active">Profile</li>
+@endsection
 @section('body')
 <!-- Profile Start -->
+<br>
+<br>
 <div class="dashboard container">
     <!-- Sidebar -->
     <aside class="col-md-3 nav-sticky dashboard-sidebar">
@@ -33,7 +39,7 @@
     <div class="main-content">
         <!-- Profile Section -->
         <section id="profile" class="content-section active">
-            <h2>User Profile</h2>
+            <h2>Profile</h2>
             <div class="user-profile mb-3">
                 <img src="{{ asset(Auth::user()->image) }}" alt="User Image" class="profile-img rounded-circle" style="width: 100px; height: 100px;" />
                 <span class="username">{{ Auth::user()->name }}</span>
@@ -62,20 +68,24 @@
                 <h2>Add Post</h2>
                 <div class="post-form p-3 border rounded">
                     <!-- Post Title -->
+                    <label for="title">Post Title</label>
                     <input type="text" name="title" value="{{ old('title') }}"  id="postTitle" class="form-control mb-2" placeholder="Post Title" />
 
                     <!-- Post Content -->
+                    <label for="content">Post Content</label>
                     <textarea  name="desc" id="postContent" class="form-control mb-2" rows="3" placeholder="What's on your mind?">
                         {{ old('desc') }}
                     </textarea>
 
                     <!-- Image Upload -->
+                    <label for="images">Post Images</label>
                     <input  name="images[]" type="file" id="postImage" class="form-control mb-2" accept="image/*" multiple />
                     <div class="tn-slider mb-2">
                         <div id="imagePreview" class="slick-slider"></div>
                     </div>
 
                     <!-- Category Dropdown -->
+                    <label for="category">Category</label>
                     <select  name="category_id" id="postCategory" class="form-select mb-2">
                         <option selected disabled value="">Select Category</option>
                         @foreach ($categories as $category)
@@ -157,7 +167,7 @@
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
                                 <a href="javascript:void(0)" onclick="if(confirm('are you sure to delete post')){document.getElementById('deletepostform_{{ $post->id }}').submit()} return false" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-thumbs-up"></i> Delete
+                                    <i class="fas fa-trash"></i> Delete
                                 </a>
 
                                 <button post-id="{{ $post->id }}" id="commentbtn_{{ $post->id }}" class="getComments" class="btn btn-sm btn-outline-secondary">

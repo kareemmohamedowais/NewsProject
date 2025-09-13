@@ -61,7 +61,7 @@ Route::group([
 
             //edit post routes
             Route::get('/post/{slug}/edit', 'edit')->name('post.edit');
-            Route::post('/post/update', 'update')->name('post.update');
+            Route::put('/post/update', 'update')->name('post.update');
             Route::post('/post/image/{id}/delete', 'deletePostImage')->name('post.image.delete');
 
 

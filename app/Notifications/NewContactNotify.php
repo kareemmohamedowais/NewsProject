@@ -15,9 +15,11 @@ class NewContactNotify extends Notification
      * Create a new notification instance.
      */
     public $contact;
-    public function __construct($contact)
+    public $userImage;
+    public function __construct($contact,$userImage)
     {
         $this->contact=$contact;
+        $this->userImage=$userImage;
     }
 
     /**
@@ -51,6 +53,7 @@ class NewContactNotify extends Notification
         return [
             'contact_title'=>$this->contact->title,
             'user_name' =>$this->contact->name,
+            'userImage' =>asset($this->userImage),
             'date' =>date('Y-m-d:m a'),
             'link'=>route('admin.contacts.show',$this->contact->id),
         ];

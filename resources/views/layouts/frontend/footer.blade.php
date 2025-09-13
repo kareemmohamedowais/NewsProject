@@ -36,11 +36,13 @@
                     <div class="footer-widget">
                         <h3 class="title">Quick Links</h3>
                         <ul>
-                            <li><a href="#">Lorem ipsum</a></li>
-                            <li><a href="#">Pellentesque</a></li>
-                            <li><a href="#">Aenean vulputate</a></li>
-                            <li><a href="#">Vestibulum sit amet</a></li>
-                            <li><a href="#">Nam dignissim</a></li>
+                            <li><a href="{{ route('frontend.index') }}">Home</a></li>
+                            <li><a href="{{ route('frontend.contact.index') }}">Contact-Us</a></li>
+                            @if (Auth::check())
+                            <li><a href="{{ route('frontend.dashboard.profile') }}">Dashboard</a></li>
+                            @endif
+                            {{-- <li><a href="#">Vestibulum sit amet</a></li> --}}
+                            {{-- <li><a href="#">Nam dignissim</a></li> --}}
                         </ul>
                     </div>
                 </div>
@@ -50,8 +52,7 @@
                         <h3 class="title">Newsletter</h3>
                         <div class="newsletter">
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Vivamus sed porta dui. Class aptent taciti sociosqu
+                                {{ $getSetting->small_desc }}
                             </p>
                             <form action="{{ route('frontend.news.subscribe') }}" method="POST">
                                 @csrf
@@ -92,14 +93,14 @@
             <div class="row">
                 <div class="col-md-6 copyright">
                     <p>
-                        Copyright &copy; <a href="{{ route('frontend.index') }}">{{ config('app.name') }}</a>. All Rights
-                        Reserved
+                        <a href="{{ route('frontend.index') }}">{{ config('app.name') }}</a>   {{ date('Y') }}
+
                     </p>
                 </div>
 
                 <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                 <div class="col-md-6 template-by">
-                    <p>Designed By <a href="https://htmlcodex.com">HTML Codex</a></p>
+                    <p>Designed By <a href="https://github.com/kareemmohamedowais/">Kareem Mohamed</a></p>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ class SearchController extends Controller
     {
 
         $request->validate([
-            'search'=>['nullable','string','max:100'],
+            'search'=>['required','string','max:100'],
         ]);
 
         // to remove tags  ex. <script></script>

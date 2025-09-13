@@ -81,8 +81,8 @@ class HomeController extends Controller
     $authors_chart = new LaravelChart($chart_options_authors);
 
 
-        return view('dashboard.index', 
+        return view('dashboard.index',
         compact('posts_chart' , 'users_chart','authors_chart','news_by_category_chart'));
-    }       
+    }
 
 }

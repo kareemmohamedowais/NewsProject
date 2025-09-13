@@ -9,7 +9,7 @@ Edit Post
     <aside class="col-md-3 nav-sticky dashboard-sidebar">
       <!-- User Info Section -->
       <div class="user-info text-center p-3">
-        <img src="" alt="User Image" class="rounded-circle mb-2" style="width: 80px; height: 80px; object-fit: cover" />
+        <img src="{{ asset(Auth::user()->image) }}" alt="User Image" class="rounded-circle mb-2" style="width: 80px; height: 80px; object-fit: cover" />
         <h5 class="mb-0" style="color: #ff6f61"></h5>
       </div>
 
@@ -41,21 +41,27 @@ Edit Post
             </div>
         @endif
         <form action="{{ route('frontend.dashboard.post.update') }}" method="post" enctype="multipart/form-data">
+            @method('PUT')
             @csrf
       <!-- Show/Edit Post Section -->
       <section id="posts-section" class="posts-section">
-        <h2>Your Posts</h2>
+        <h2>Update Post</h2>
         <ul class="list-unstyled user-posts">
           <!-- Example of a Post Item -->
           <li class="post-item">
             <!-- Editable Title -->
             <input type="hidden" name="post_id" value="{{ $post->id }}">
-            <input type="text" name="title" class="form-control mb-2 post-title" value="{{ $post->title }}"  />
+            <label for="title">Post Title</label>
+            <input type="text"  name="title" class="form-control mb-2 post-title" value="{{ old('title', $post->title)}}"  />
 
             <!-- Editable Content -->
+            {{-- <textarea  name="small_desc" class="form-control mb-2 post-content" >
+                {{ old('small_desc', $post->small_desc) }}
+            </textarea> --}}
+            <label for="content">Post Content</label>
             <textarea id="post-desc" name="desc" class="form-control mb-2 post-content" >
-                {!! $post->desc !!}
-              </textarea>
+                {!!old('desc', $post->desc) !!}
+            </textarea>
 
             <!-- Post Images Slider -->
             <div class="tn-slider">
@@ -65,10 +71,12 @@ Edit Post
             </div>
 
             <!-- Image Upload Input for Editing -->
+            <label for="PostImages">Post Images</label>
             <input id="PostImages" type="file" name="images[]" class="form-control mt-2 edit-post-image" accept="image/*" multiple />
 
             <br>
             <!-- Editable Category Dropdown -->
+            <label for="category">Category</label>
             <select  name="category_id" class="form-control mb-2 post-category">
               @foreach ($categories as $category)
               <option  value="{{ $category->id }}" @selected($category->id == $post->category_id) >{{ $category->name }}</option>
@@ -96,14 +104,14 @@ Edit Post
 
             <!-- Post Actions -->
             <div class="post-actions mt-2">
-              <button class="btn btn-primary edit-post-btn">Edit</button>
-              <a href="" class="btn btn-danger delete-post-btn">Delete</a>
-              <button type="submit" class="btn btn-success save-post-btn d-none">
+              <button class="btn btn-primary edit-post-btn">Update</button>
+              {{-- <a href="" class="btn btn-danger delete-post-btn">Delete</a> --}}
+              {{-- <button type="submit" class="btn btn-success save-post-btn d-none">
                 Save
               </button>
               <a href="{{ route('frontend.dashboard.profile') }}" class="btn btn-secondary cancel-edit-btn d-none">
                 Cancel
-              </a>
+              </a> --}}
             </div>
 
           </li>

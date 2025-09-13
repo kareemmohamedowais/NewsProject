@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-12">
                         <div class="form-group">
                             <textarea name="small_desc" placeholder="Enter Post Small Description" class="form-control">{{ $post->small_desc }}</textarea>
@@ -47,7 +47,7 @@
                             @enderror
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-12">

@@ -4,6 +4,10 @@
 @parent
 @endsection
 
+@section('title')
+    Home
+@endsection
+
 @section('body')
     @php
         $latest_three_posts = $posts->take(3);

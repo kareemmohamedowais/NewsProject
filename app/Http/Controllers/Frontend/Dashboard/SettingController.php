@@ -23,8 +23,10 @@ class SettingController extends Controller
         $request->validated();
         $user = auth()->user();
         $user->update($request->except(['_token','image']));
+        if ($request->hasFile('image')) {
+            ImageManager::uploadImages($request,null,$user);
 
-        ImageManager::uploadImages($request,null,$user);
+        }
 
         return redirect()->back()->with('success','updated done');
     }
@@ -39,12 +41,11 @@ class SettingController extends Controller
     ]);
 
     $user = Auth::user();
-    //  التأكد من كلمة المرور القديمة
     if (!Hash::check($request->current_password, $user->password)) {
         Session::flash('error','password dose not match');
         return redirect()->back();
     }
-    // تحديث كلمة المرور
+    
     $user->update([
         'password'=>Hash::make($request->password)
     ]);

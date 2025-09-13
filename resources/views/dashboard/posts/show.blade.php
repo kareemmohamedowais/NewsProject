@@ -80,9 +80,9 @@
                 </div>
             </div>
             <br>
-            <div class="sn-content">
+            {{-- <div class="sn-content">
                 <strong>Small Description : {{ $post->small_desc }}</strong>
-            </div>
+            </div> --}}
             <br>
             <div class="sn-content">
                 {!! $post->desc !!}

@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-12">
                         <div class="form-group">
                             <label for="small_desc">small_desc</label>
@@ -47,7 +47,7 @@
                             @enderror
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-12">

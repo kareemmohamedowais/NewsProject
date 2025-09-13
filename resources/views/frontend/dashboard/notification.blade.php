@@ -1,5 +1,14 @@
 @extends('layouts.frontend.app')
 
+@section('title')
+    Notifications
+@endsection
+
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item active">Notifications</li>
+@endsection
+
 @section('body')
        <!-- Dashboard Start-->
        <div class="dashboard container">

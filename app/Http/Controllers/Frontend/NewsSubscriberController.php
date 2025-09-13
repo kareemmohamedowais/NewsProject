@@ -15,10 +15,6 @@ class NewsSubscriberController extends Controller
 {
     public function store(Request $request)
     {
-
-
-
-
         $request->validate([
             'email' => ['required', 'email', Rule::unique(NewSubsriber::class, 'email')],
         ], [
@@ -33,6 +29,7 @@ class NewsSubscriberController extends Controller
             ]);
 
             Mail::to($request->email)->send(new NewSubscriber());
+            
             return redirect()->back()->with('success', 'Thanks for subscribing');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong.');

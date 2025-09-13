@@ -23,7 +23,7 @@ if (role == "admin") {
             $('#notify_push').prepend(`
                 <a class="dropdown-item d-flex align-items-center" href=${event.link}?notify-admin=${event.id}">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                        <img class="rounded-circle" src="${ event.userImage }"
                                             alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>

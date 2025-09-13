@@ -35,8 +35,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-3 col-md-4">
                     <div class="b-logo">
-                        <a href="index.html">
-                            <img src="{{ asset('assets/frontend/' . $getSetting->logo) }}" alt="Logo" />
+                        <a href="{{ route('frontend.index') }}">
+                            <img src="{{ asset($getSetting->logo) }}" alt="Logo" />
                         </a>
                     </div>
                 </div>
@@ -45,11 +45,16 @@
 
                     </div>
                 </div>
+
                 <div class="col-lg-3 col-md-4">
                     <form action="{{ route('frontend.search') }}" method="POST">
                         @csrf
                         <div class="b-search">
                             <input name="search" type="text" placeholder="Search" />
+                            @error('search')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            <br><br>
+                            @enderror
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </div>
                     </form>
@@ -70,7 +75,7 @@
 
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto">
-                        <a href="{{ route('frontend.index') }}" class="nav-item nav-link active">Home</a>
+                        <a href="{{ route('frontend.index') }}" class="nav-item nav-link ">Home</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">categories</a>
                             <div class="dropdown-menu">

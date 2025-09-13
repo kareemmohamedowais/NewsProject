@@ -38,11 +38,13 @@ class CaheServiceProvider extends ServiceProvider
             });
         }
         //gretest_posts_comments
+        // Cache::forget('gretest_posts_comments');
         if (!Cache::has('gretest_posts_comments')) {
 
         $gretest_posts_comments = Post::withCount('comments')
             ->orderByDesc('comments_count')
             ->take(5)
+            ->with('images')
             ->get();
         Cache::remember('gretest_posts_comments',3600,function()use($gretest_posts_comments){
             return $gretest_posts_comments;

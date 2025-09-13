@@ -16,19 +16,21 @@
             <div class="row">
             <div class="col-lg-9">
                 <div class="row">
-                @forelse ($posts as $post )
+                @forelse ($posts as $post)
+    <div class="col-md-4">
+        <div class="mn-img">
+            <img src="{{ asset((optional($post->images->first())->path ?? 'default.jpg')) }}" alt="{{ $post->title }}" />
+            <div class="mn-title">
+                <a href="{{ route('frontend.post.show', $post->slug) }}" title="{{ $post->title }}">
+                    {{ $post->title }}
+                </a>
+            </div>
+        </div>
+    </div>
+@empty
+    <p>No posts found</p>
+@endforelse
 
-                <div class="col-md-4">
-                    <div class="mn-img">
-                    <img src="{{ asset('assets/frontend') }}/{{ $post->images->first()->path }}" />
-                    <div class="mn-title">
-                        <a href="{{ route('frontend.post.show', $post->slug) }}" title="{{ $post->title }}">{{ $post->title }}</a>
-                    </div>
-                    </div>
-                </div>
-                @empty
-                <p>No posts found</p>
-                @endforelse
 
 
                 </div>

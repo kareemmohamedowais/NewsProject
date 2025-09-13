@@ -58,7 +58,7 @@
                 user_id = "{{ auth()->user()->id }}";
             @endauth
         </script>
-        <script src="{{ asset('build/assets/app-Bw_e-C4s.js') }}"></script>
+    <script src="{{ asset('build/assets/app-C0aLw_G_.js') }}"></script>
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
