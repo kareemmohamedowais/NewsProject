@@ -12,19 +12,18 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            @can('home')
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('admin.index') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
-            @endcan
+
 
 
             <!-- Divider -->
             <hr class="sidebar-divider">
             {{-- Categories Management --}}
-            @can('categories')
+            @can('show_categories')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.categories.index') }}">
                         <i class="fas fa-fw fa-list"></i>
@@ -32,6 +31,7 @@
                 </li>
             @endcan
             {{--  Posts Management --}}
+            @can('show_posts')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Posts"
                     aria-expanded="true" aria-controls="Posts">
@@ -40,19 +40,20 @@
                 </a>
                 <div id="Posts" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        @can('index_posts')
+                        @can('show_posts')
                             <a class="collapse-item" href="{{ route('admin.posts.index') }}">Posts</a>
                         @endcan
-                        @can('create_posts')
+                        @can('create_post')
                             <a class="collapse-item" href="{{ route('admin.posts.create') }}">Create Post </a>
                         @endcan
 
                     </div>
                 </div>
             </li>
+            @endcan
 
             {{-- Users Management --}}
-            @can('users')
+            @can('show_users')
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                         aria-expanded="true" aria-controls="collapsePages">
@@ -61,15 +62,21 @@
                     </a>
                     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
+                            @can('show_users')
+
                             <a class="collapse-item" href="{{ route('admin.users.index') }}">Users</a>
+                            @endcan
+                            @can('create_user')
+
                             <a class="collapse-item" href="{{ route('admin.users.create') }}">Add User </a>
+                            @endcan
 
                         </div>
                     </div>
                 </li>
             @endcan
             {{-- Admins Management --}}
-            @can('admins')
+            @can('show_admins')
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Admins"
                         aria-expanded="true" aria-controls="Admins">
@@ -78,8 +85,14 @@
                     </a>
                     <div id="Admins" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
+                            @can('show_admins')
+
                             <a class="collapse-item" href="{{ route('admin.admins.index') }}">Admins</a>
+                            @endcan
+                            @can('create_admin')
+
                             <a class="collapse-item" href="{{ route('admin.admins.create') }}">Create Admin </a>
+                            @endcan
 
                         </div>
                     </div>
@@ -88,7 +101,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
             {{-- Authorizations --}}
-            @can('authorizations')
+            @can('show_roles')
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
@@ -97,14 +110,20 @@
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
+                            @can('show_roles')
+
                             <a class="collapse-item" href="{{ route('admin.authorizations.index') }}">Roles</a>
+                            @endcan
+                            @can('create_role')
+
                             <a class="collapse-item" href="{{ route('admin.authorizations.create') }}">Add New Role</a>
+                            @endcan
                         </div>
                     </div>
                 </li>
             @endcan
             {{-- Settings --}}
-            @can('settings')
+            @can('show_settings')
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                         aria-expanded="true" aria-controls="collapseUtilities">
@@ -114,15 +133,19 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{{ route('admin.settings.index') }}">Settings</a>
-                            <a class="collapse-item" href="{{ route('admin.related-site.index') }}">Related Sites</a>
+                            @can('show_settings')
 
+                            <a class="collapse-item" href="{{ route('admin.settings.index') }}">Settings</a>
+                            @endcan
+                            @can('show_rellated_sites')
+                            <a class="collapse-item" href="{{ route('admin.related-site.index') }}">Related Sites</a>
+                            @endcan
                         </div>
                     </div>
                 </li>
             @endcan
             {{-- Contacts --}}
-            @can('contacts')
+            @can('show_contacts')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.contacts.index') }}">
                         <i class="fas fa-fw fa-envelope"></i>
@@ -130,7 +153,7 @@
                 </li>
             @endcan
             {{-- Notifications --}}
-            @can('notifications')
+            @can('show_notifications')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.notifications.index') }}">
                         <i class="fas fa-fw fa-bell"></i>

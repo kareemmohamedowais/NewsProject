@@ -1,13 +1,13 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Create User
+    Show User
 @endsection
 
 @section('content')
-   <center>
+    <center>
         <div class="card-body shadow mb-4 col-10">
-            <h2>User : {{$user->name}}</h2><br>
-            <img src="{{ asset($user->image )}}" class="img-thumbnail"><br><br>
+            <h2>User : {{ $user->name }}</h2><br>
+            <img src="{{ asset($user->image) }}" class="img-thumbnail"><br><br>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
@@ -39,12 +39,13 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        <input disabled value="Status : {{ $user->status==1?'Active':'Not Active' }}" class="form-control">
+                        <input disabled value="Status : {{ $user->status == 1 ? 'Active' : 'Not Active' }}" class="form-control">
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                           <input disabled value="Email Status : {{ $user->email_verified_at == null ?'Not Active':'Active' }}" class="form-control">
+                        <input disabled value="Email Status : {{ $user->email_verified_at == null ? 'Not Active' : 'Active' }}"
+                            class="form-control">
                     </div>
                 </div>
             </div>
@@ -74,13 +75,22 @@
                 </div> --}}
             </div>
 
-           <br>
-            <a href="{{route('admin.users.changeStatus' , $user->id)}}" class="btn btn-primary">{{ $user->status==1?'Block':'Active' }}</a>
-            <a href="javascript:void(0)"  onclick="if(confirm('Do you want to delete the user')){document.getElementById('delete_user').submit()} return false" class="btn btn-info">Delete</a>
+            <br>
+            @can('change_status_user')
+                <a href="{{ route('admin.users.changeStatus', $user->id) }}"
+                    class="btn btn-primary">{{ $user->status == 1 ? 'Block' : 'Active' }}</a>
+            @endcan
+            @can('delete_user')
+                <a href="javascript:void(0)"
+                    onclick="if(confirm('Do you want to delete the user')){document.getElementById('delete_user').submit()} return false"
+                    class="btn btn-info">Delete</a>
+            @endcan
         </div>
 
-        <form id="delete_user" action="{{ route('admin.users.destroy' , $user->id) }}" method="post">
-            @csrf
-            @method('DELETE')
-         </form>
-@endsection
+        @can('delete_user')
+            <form id="delete_user" action="{{ route('admin.users.destroy', $user->id) }}" method="post">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endcan
+    @endsection

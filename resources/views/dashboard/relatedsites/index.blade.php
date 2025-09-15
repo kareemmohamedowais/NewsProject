@@ -27,7 +27,10 @@
 
             {{-- table data --}}
             <div class="card-body">
-                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#add-site">Add Related Site</a>
+                @can('create_rellated_site')
+                    <a href="{{ route('admin.admins.changeStatus', $admin->id) }}"><i
+                            class="fa @if ($admin->status == 1) fa-stop @else fa-play @endif"></i></a>
+                @endcan
                 <br><br>
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -54,23 +57,31 @@
                                     <td>{{ $site->name }}</td>
                                     <td>{{ $site->url }}</td>
                                     <td>
-                                        <a href="javascript:void(0)"
-                                            onclick="if(confirm('Do you want to delete the site')){document.getElementById('delete_site_{{ $site->id }}').submit()} return false"><i
-                                                class="fa fa-trash"></i></a>
+                                        @can('delete_rellated_site')
+                                            <a href="javascript:void(0)"
+                                                onclick="if(confirm('Do you want to delete the site')){document.getElementById('delete_site_{{ $site->id }}').submit()} return false"><i
+                                                    class="fa fa-trash"></i></a>
+                                        @endcan
 
-                                        <a href="javascript:void(0)"><i class="fa fa-edit" data-toggle="modal"
-                                                data-target="#edit-site-{{ $site->id }}"></i></a>
+                                        @can('edit_rellated_site')
+                                            <a href="javascript:void(0)"><i class="fa fa-edit" data-toggle="modal"
+                                                    data-target="#edit-site-{{ $site->id }}"></i></a>
+                                        @endcan
                                     </td>
                                 </tr>
 
-                                <form id="delete_site_{{ $site->id }}"
-                                    action="{{ route('admin.related-site.destroy', $site->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
+                                @can('delete_rellated_site')
+                                    <form id="delete_site_{{ $site->id }}"
+                                        action="{{ route('admin.related-site.destroy', $site->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @endcan
 
                                 {{-- edit site modal --}}
-                                @include('dashboard.relatedsites.edit')
+                                @can('edit_rellated_site')
+                                    @include('dashboard.relatedsites.edit')
+                                @endcan
                                 {{-- end edit site modal --}}
                             @empty
                                 <tr>
@@ -86,7 +97,9 @@
         </div>
 
         {{-- modal add new site --}}
-        @include('dashboard.relatedsites.create')
+        @can('create_rellated_site')
+            @include('dashboard.relatedsites.create')
+        @endcan
     </div>
     <!-- /.container-fluid -->
 @endsection

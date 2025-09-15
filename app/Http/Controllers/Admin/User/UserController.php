@@ -17,8 +17,11 @@ class UserController extends Controller
      */
 
     public function __construct(){
-        $this->middleware('can:users');
-    }
+        $this->middleware('can:show_users')->only(['index']);
+        $this->middleware('can:create_user')->only(['create','store']);
+        $this->middleware('can:delete_user')->only(['destroy']);
+        $this->middleware('can:change_status_user')->only(['changeStatus']);
+        $this->middleware('can:show_user')->only(['show']);    }
     public function index()
     {
 

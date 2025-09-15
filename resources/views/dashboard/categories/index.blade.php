@@ -14,13 +14,16 @@
             </div>
 
             @include('dashboard.categories.filter.filter')
-            <div class="col-4">
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-category">
-                        Create Category
-                    </button>
+            @can('create_category')
+                <div class="col-4">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-category">
+                            Create Category
+                        </button>
+                    </div>
                 </div>
-            </div>
+            @endcan
+
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -64,24 +67,36 @@
                                     <td>{{ $category->posts_count }}</td>
                                     <td>{{ $category->created_at }}</td>
                                     <td>
-                                        <a href="javascript:void(0)"
-                                            onclick="if(confirm('Do you want to delete the category')){document.getElementById('delete_category_{{ $category->id }}').submit()} return false"><i
-                                                class="fa fa-trash"></i></a>
-                                        <a href="{{ route('admin.category.changeStatus', $category->id) }}"><i
-                                                class="fa @if ($category->status == 1) fa-stop @else fa-play @endif"></i></a>
-                                        <a href="javascript:void(0)"><i class="fa fa-edit" data-toggle="modal"
-                                                data-target="#edit-category-{{ $category->id }}"></i></a>
+                                        @can('delete_category')
+                                            <a href="javascript:void(0)"
+                                                onclick="if(confirm('Do you want to delete the category')){document.getElementById('delete_category_{{ $category->id }}').submit()} return false"><i
+                                                    class="fa fa-trash"></i></a>
+                                        @endcan
+                                        @can('change_status_category')
+                                            <a href="{{ route('admin.category.changeStatus', $category->id) }}"><i
+                                                    class="fa @if ($category->status == 1) fa-stop @else fa-play @endif"></i></a>
+                                        @endcan
+                                        @can('edit_category')
+                                            <a href="javascript:void(0)"><i class="fa fa-edit" data-toggle="modal"
+                                                    data-target="#edit-category-{{ $category->id }}"></i></a>
+                                        @endcan
                                     </td>
                                 </tr>
 
-                                <form id="delete_category_{{ $category->id }}"
+                                @can('delete_category')
+ <form id="delete_category_{{ $category->id }}"
                                     action="{{ route('admin.categories.destroy', $category->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                 </form>
+                                @endcan
+
 
                                 {{-- edit Category modal --}}
+                                @can('edit_category')
+
                                 @include('dashboard.categories.edit')
+                                @endcan
                                 {{-- end edit category modal --}}
                             @empty
                                 <tr>
@@ -97,7 +112,10 @@
         </div>
 
         {{-- modal add new category --}}
+        @can('create_category')
+
         @include('dashboard.categories.create')
+        @endcan
     </div>
     <!-- /.container-fluid -->
 @endsection

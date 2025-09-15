@@ -90,20 +90,29 @@
 
             <br>
             <center>
-                <a class="btn btn-danger" href="javascript:void(0)"
+                @can('delete_post')
+<a class="btn btn-danger" href="javascript:void(0)"
                     onclick="if(confirm('Do you want to delete the post')){document.getElementById('delete_post_{{ $post->id }}').submit()} return false">Delete
                     Post <i class="fa fa-trash"></i></a>
-                <a class="btn btn-primary" href="{{ route('admin.posts.changeStatus', $post->id) }}">Change Status <i
+                @endcan
+                @can('change_status_post')
+<a class="btn btn-primary" href="{{ route('admin.posts.changeStatus', $post->id) }}">Change Status <i
                         class="fa @if ($post->status == 1) fa-stop @else fa-play @endif"></i></a>
-                <a class="btn btn-info" href="{{ route('admin.posts.edit', $post->id) }}">Edit Post <i
+
+                @endcan
+                @can('edit_post')
+<a class="btn btn-info" href="{{ route('admin.posts.edit', $post->id) }}">Edit Post <i
                         class="fa fa-edit"></i></a>
+                @endcan
             </center>
         </div>
     </div>
-    <form id="delete_post_{{ $post->id }}" action="{{ route('admin.posts.destroy', $post->id) }}" method="post">
+    @can('delete_post')
+<form id="delete_post_{{ $post->id }}" action="{{ route('admin.posts.destroy', $post->id) }}" method="post">
         @csrf
         @method('DELETE')
     </form>
+    @endcan
 
 
 

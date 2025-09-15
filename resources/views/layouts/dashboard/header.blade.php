@@ -14,16 +14,16 @@
                                 placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <select name="option" class="form-control bg-light border-0 small ">
                                 <option selected disabled value="">Select Option</option>
-                                @can('posts')
+                                @can('show_posts')
                                     <option value="post">Posts</option>
                                 @endcan
-                                @can('users')
+                                @can('show_users')
                                     <option value="user">Users</option>
                                 @endcan
-                                @can('categories')
+                                @can('show_categories')
                                     <option value="category">Categories</option>
                                 @endcan
-                                @can('contacts')
+                                @can('show_contacts')
                                     <option value="contact">Contact</option>
                                 @endcan
 
@@ -117,7 +117,7 @@
                         </li> --}}
 
                         <!-- Nav Item - Messages -->
-                        @can('notifications')
+                        @can('show_notifications_icon')
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -162,7 +162,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span
                                     class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth('admin')->user()->name }}</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="{{ asset('images/default-user.png')}}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

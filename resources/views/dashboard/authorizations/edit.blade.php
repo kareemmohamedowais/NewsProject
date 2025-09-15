@@ -1,21 +1,33 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Create Role
+    Edit Role
 @endsection
 
 @section('content')
     <div class="d-flex justify-content-center">
+
         <form action="{{ route('admin.authorizations.update' , $authorization->id) }}" method="post">
             @csrf
             @method('PUT')
-            <div class="card-body shadow mb-4" style="min-width: 75ch">
+            <div class="card-body shadow mb-4" style="min-width: 90ch">
             <div class="row">
+                 @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
                 <div class="col-9">
                     <h2> Edit Role</h2>
                 </div>
                 <div class="col-3">
                     <a href="{{ route('admin.authorizations.index') }}" class="btn btn-primary">Back To Roles</a>
                 </div>
+
             </div><br>
                 <div class="row">
                     <div class="col-12">

@@ -23,14 +23,12 @@ class PostController extends Controller
 
         public function __construct(){
 
-        $this->middleware('can:index_posts')->only('index');
-        $this->middleware('can:create_posts')->only('create');
-        $this->middleware('can:update_posts')->only('update');
-        $this->middleware('can:show_posts')->only('show');
-        $this->middleware('can:edit_posts')->only('edit');
-        $this->middleware('can:delete_posts')->only('destroy');
-        $this->middleware('can:change_status_posts')->only('changeStatus');
-
+        $this->middleware('can:show_posts')->only(['index']);
+        $this->middleware('can:create_post')->only(['create','store']);
+        $this->middleware('can:edit_post')->only(['edit','update']);
+        $this->middleware('can:delete_post')->only(['destroy']);
+        $this->middleware('can:change_status_post')->only(['changeStatus']);
+        $this->middleware('can:show_post')->only(['show']);
     }
     public function index()
     {

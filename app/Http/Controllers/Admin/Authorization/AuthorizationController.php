@@ -13,8 +13,10 @@ class AuthorizationController extends Controller
      */
 
         public function __construct(){
-        $this->middleware('can:authorizations');
-    }
+        $this->middleware('can:show_roles')->only(['index']);
+        $this->middleware('can:create_role')->only(['create','store']);
+        $this->middleware('can:edit_role')->only(['edit','update']);
+        $this->middleware('can:delete_role')->only(['destroy']);    }
     public function index()
     {
         $authorizations = Authorizations::paginate(5);
@@ -34,20 +36,38 @@ class AuthorizationController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'role'=>'required|min:2|max:60',
-            'permissions'=>'required|array|min:1',
-        ]);
+{
+    $request->validate([
+        'role' => 'required|string|min:2|max:60|unique:authorizations,role',
+        'permissions' => 'required|array|min:1',
+    ]);
 
-        $authorizations = new Authorizations();
-        $authorizations->role = $request->role;
-        $authorizations->permissions = json_encode($request->permissions);
-        $authorizations->save();
-        // $authorizations = Authorizations::create($request->only(['role','permissions']));
-        return redirect()->back()->with('success' , 'Role Created Successfully!');
+    // ناخد البرميشنز المختارة
+    $permissions = $request->permissions;
 
+    // نجيب dependencies من ملف config/permissions.php
+    $dependencies = config('authorization.dependencies');
+
+    // نضيف dependencies تلقائي لو مش موجودة
+    foreach ($permissions as $perm) {
+        if (isset($dependencies[$perm])) {
+            foreach ($dependencies[$perm] as $dep) {
+                if (!in_array($dep, $permissions)) {
+                    $permissions[] = $dep;
+                }
+            }
+        }
     }
+
+    // إنشاء الرول
+    $authorizations = new Authorizations();
+    $authorizations->role = $request->role;
+    $authorizations->permissions = json_encode($permissions);
+    $authorizations->save();
+
+    return redirect()->back()->with('success', 'Role Created Successfully!');
+}
+
 
     /**
      * Display the specified resource.
@@ -70,19 +90,37 @@ class AuthorizationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        // $request->validate([
-        //     'role'=>'required|min:2|max:60',
-        //     'permissions'=>'required|array|min:1',
-        // ]);
-        $authorization = Authorizations::findOrFail($id);
-        $authorization->role = $request->role;
-        $authorization->permissions = json_encode($request->permissions);
-        $authorization->save();
-        return redirect()->route('admin.authorizations.index')->with('success' , 'Role Updated Successfully!');
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'role' => 'required|string|min:2|max:60|unique:authorizations,role,' . $id,
+        'permissions' => 'required|array|min:1',
+    ]);
 
+    // ناخد البرميشنز المختارة
+    $permissions = $request->permissions;
+    // نجيب dependencies من ملف config/permissions.php
+    $dependencies = config('authorization.dependencies');
+
+    // نضيف dependencies تلقائي لو مش موجودة
+    foreach ($permissions as $perm) {
+        if (isset($dependencies[$perm])) {
+            foreach ($dependencies[$perm] as $dep) {
+                if (!in_array($dep, $permissions)) {
+                    $permissions[] = $dep;
+                }
+            }
+        }
     }
+
+    // نعدل على الـ role
+    $authorizations = Authorizations::findOrFail($id);
+    $authorizations->role = $request->role;
+    $authorizations->permissions = json_encode($permissions);
+    $authorizations->save();
+
+    return redirect()->back()->with('success', 'Role Updated Successfully!');
+}
 
     /**
      * Remove the specified resource from storage.

@@ -10,10 +10,7 @@ use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 
 class HomeController extends Controller
 {
-        public function __construct()
-    {
-        $this->middleware('can:home');
-    }
+        
 
     public function index()
     {

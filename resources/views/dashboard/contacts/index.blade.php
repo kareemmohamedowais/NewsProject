@@ -53,16 +53,23 @@
                             <td>{{$contact->phone}}</td>
                             <td>{{$contact->created_at->diffForHumans()}}</td>
                             <td>
+                                @can('delete_contact')
                                 <a href="javascript:void(0)" onclick="if(confirm('Do you want to delete the contact')){document.getElementById('delete_contact_{{ $contact->id }}').submit()} return false"><i class="fa fa-trash"></i></a>
+
+                                @endcan
+                                @can('show_contact')
                                 <a href="{{ route('admin.contacts.show' , [$contact->id, 'page'=>request()->page]) }}" ><i class="fa fa-eye"></i></a>
-                            
+                                @endcan
+
                             </td>
                         </tr>
 
-                        <form id="delete_contact_{{$contact->id}}" action="{{ route('admin.contacts.destroy' , $contact->id) }}" method="post">
+                        @can('delete_contact')
+<form id="delete_contact_{{$contact->id}}" action="{{ route('admin.contacts.destroy' , $contact->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                         </form>
+                        @endcan
                         @empty
                             <tr>
                                 <tdv class="alert alert-info" colspan="6"> No contacts</td>

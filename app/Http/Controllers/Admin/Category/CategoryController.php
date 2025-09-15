@@ -15,8 +15,11 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:categories');
-    }
+        $this->middleware('can:show_categories')->only(['index']);
+        $this->middleware('can:create_category')->only(['create','store']);
+        $this->middleware('can:edit_category')->only(['edit','update']);
+        $this->middleware('can:delete_category')->only(['destroy']);
+        $this->middleware('can:change_status_category')->only(['changeStatus']);    }
     public function index()
     {
         $order_by = request()->order_by ?? 'desc';

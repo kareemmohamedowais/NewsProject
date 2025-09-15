@@ -17,8 +17,11 @@ class AdminController extends Controller
      */
 
         public function __construct(){
-        $this->middleware('can:admins');
-    }
+        $this->middleware('can:show_admins')->only(['index']);
+        $this->middleware('can:create_admins')->only(['create','store']);
+        $this->middleware('can:delete_admins')->only(['destroy']);
+        $this->middleware('can:change_status_admins')->only(['changeStatus']);
+        $this->middleware('can:show_admin')->only(['show']);    }
     public function index()
     {
         $order_by = request()->order_by ?? 'desc';

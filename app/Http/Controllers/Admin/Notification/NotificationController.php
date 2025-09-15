@@ -11,7 +11,10 @@ class NotificationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:notifications');
+        $this->middleware('can:show_notifications')->only(['index']);
+        $this->middleware('can:delete_single_notification')->only(['destroy']);
+        $this->middleware('can:delete_all_notification')->only(['deleteAll']);
+        // $this->middleware('can:show_notifications_icon')->only(['icon']);
     }
     public function index(){
         Auth::guard('admin')->user()->unreadNotifications->markAsRead();

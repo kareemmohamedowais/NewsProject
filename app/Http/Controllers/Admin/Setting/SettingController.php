@@ -13,7 +13,8 @@ class SettingController extends Controller
 {
 
         public function __construct(){
-        $this->middleware('can:settings');
+        $this->middleware('can:show_settings')->only(['index']);
+        $this->middleware('can:update_settings')->only(['update']);
     }
     public function index(){
         return view('dashboard.settings.index');

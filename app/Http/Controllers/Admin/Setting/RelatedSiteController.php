@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Session;
 
 class RelatedSiteController extends Controller
 {
+    public function __construct(){
+        $this->middleware('can:show_rellated_sites')->only(['index']);
+        $this->middleware('can:create_rellated_site')->only(['create','store']);
+        $this->middleware('can:edit_rellated_site')->only(['edit','update']);
+        $this->middleware('can:delete_rellated_site')->only(['destroy']);    }
     /**
      * Display a listing of the resource.
      */

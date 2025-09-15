@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Create User
+    Show Admin
 @endsection
 
 @section('content')

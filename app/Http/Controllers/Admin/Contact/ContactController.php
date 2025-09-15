@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:show_contacts')->only(['index']);
+        $this->middleware('can:show_contact')->only(['show']);
+        // $this->middleware('can:replay_contact')->only(['reply']);
+        $this->middleware('can:delete_contact')->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

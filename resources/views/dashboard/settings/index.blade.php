@@ -129,10 +129,12 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-group">
-                        Logo : <input type="file" class="dropify" name="logo" class="form-control">
+                        @can('update_settings')
+Logo : <input type="file" class="dropify" name="logo" class="form-control">
                         @error('logo')
                         <strong class="text-danger">{{ $message }}</strong>
                         @enderror
+                        @endcan
                         <br>
                         <img class="img-thumbnail" src="{{ asset($getSetting->logo) }}">
 
@@ -140,10 +142,12 @@
                 </div>
                 <div class="col-6">
                     <div class="form-group">
-                        Favicon : <input type="file" class="dropify" name="favicon"  class="form-control">
+                        @can('update_settings')
+Favicon : <input type="file" class="dropify" name="favicon"  class="form-control">
                         @error('favicon')
                         <strong class="text-danger">{{ $message }}</strong>
                         @enderror
+                        @endcan
                         <br>
                         <img class="img-thumbnail" src="{{ asset($getSetting->favicon) }}">
 
@@ -151,9 +155,12 @@
                 </div>
             </div>
             <br>
-            <input name="setting" value="{{ $getSetting->id }}" hidden>
+            @can('update_settings')
+ <input name="setting" value="{{ $getSetting->id }}" hidden>
             <button type="submit" class="btn btn-primary"> Update Setting</button>
-        </div>
+
+            @endcan
+           </div>
 
     </form>
    </div>
