@@ -57,4 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return 'users.'.$this->id;
     }
+        public function status()
+    {
+        return $this->status == 1 ?'Active':'Not Active';
+    }
 }

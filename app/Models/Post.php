@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Psy\CodeCleaner\FinalClassPass;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
@@ -55,4 +56,39 @@ class Post extends Model
         $query->where('status',1);
     }
 
+public function scopeActiveUser($query)
+    {
+        $query->where(function($query){
+            $query->whereHas('user' , function($user){
+                $user->whereStatus(1);
+            })->orWhere('user_id' , null);
+        });
+    }
+    public function scopeActiveCategory($query)
+    {
+        $query->whereHas('category' , function($user){
+            $user->whereStatus(1);
+        });
+    }
+    // public function getStatusAttribute()
+    // {
+    //     return $this->attributes['status'] == 1 ?'Active':'Not Active';
+    // }
+//     public function setStatusAttribute($value)
+// {
+//     $this->attributes['status'] = $value === 'Active' ? 1 : 0;
+// }
+
+//  protected function status()
+//     {
+//         return Attribute::make(
+//             get: fn ($value) => $value == 1 ? 'Active' : 'Not Active',
+//             set: fn ($value) => $value === 'Active' ? 1 : 0,
+//         );
+//     }
+
+    public function status()
+    {
+        return $this->status == 1 ?'Active':'Not Active';
+    }
 }

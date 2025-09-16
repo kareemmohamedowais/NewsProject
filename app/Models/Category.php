@@ -34,4 +34,8 @@ class Category extends Model
     public function scopeActive($query){
         $query->where('status',1);
     }
+        public function status()
+    {
+        return $this->status == 1 ?'Active':'Not Active';
+    }
 }
