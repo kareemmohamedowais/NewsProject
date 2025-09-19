@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Frontend;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ContactRequest extends FormRequest
 {
@@ -19,38 +21,50 @@ class ContactRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+public function rules(): array
     {
         return [
-            'name'=>['required','string','min:2','max:50'],
-            'email'=>['required','email'],
-            'title'=>['required','string','max:60'],
-            'phone'=>['required','string','min:11','max:11'],
-            'body'=>['required','min:10','max:500'],
+            'name'  => ['required','string','min:2','max:50'],
+            'email' => ['required','email'],
+            'title' => ['required','string','max:60'],
+            'phone' => ['required','string','min:11','max:11'],
+            'body'  => ['required','string','min:10','max:500'],
         ];
     }
-    public function messages()
-{
-    return [
-        'name.required' => 'Name is required.',
-        'name.string'   => 'Name must be a valid string.',
-        'name.min'      => 'Name must be at least 2 characters.',
-        'name.max'      => 'Name must not exceed 50 characters.',
 
-        'email.required'=> 'Email is required.',
-        'email.email'   => 'Please enter a valid email address.',
+    public function messages(): array
+    {
+        return [
+            'name.required'  => 'Name is required.',
+            'name.min'       => 'Name must be at least 2 characters.',
+            'name.max'       => 'Name must not exceed 50 characters.',
 
-        'title.required'=> 'Title is required.',
-        'title.max'     => 'Title must not exceed 60 characters.',
+            'email.required' => 'Email is required.',
+            'email.email'    => 'Please provide a valid email address.',
 
-        'phone.required'=> 'Phone number is required.',
-        'phone.string'  => 'Phone number must be a valid string.',
-        'phone.min'     => 'Phone number must be exactly 11 digits.',
-        'phone.max'     => 'Phone number must be exactly 11 digits.',
+            'title.required' => 'Title is required.',
+            'title.max'      => 'Title must not exceed 60 characters.',
 
-        'body.required' => 'Message body is required.',
-        'body.min'      => 'Message must be at least 10 characters long.',
-        'body.max'      => 'Message must not exceed 500 characters.',
-    ];
-}
+            'phone.required' => 'Phone number is required.',
+            'phone.min'      => 'Phone number must be exactly 11 digits.',
+            'phone.max'      => 'Phone number must be exactly 11 digits.',
+
+            'body.required'  => 'Message body is required.',
+            'body.min'       => 'Message must be at least 10 characters.',
+            'body.max'       => 'Message must not exceed 500 characters.',
+        ];
+    }
+
+
+
+// protected function failedValidation(Validator $validator): void
+// {
+//     throw new HttpResponseException(
+//         apiResponse(422, 'Validation Error', $validator->errors())
+//     );
+// }
+
+
+
+
 }
