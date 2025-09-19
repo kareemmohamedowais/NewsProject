@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\General;
 
-use App\Http\Resources\PostCollection;
-use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
+use App\Http\Resources\PostCollection;
+use App\Http\Resources\CommentCollection;
 use App\Http\Resources\CategoryCollection;
-use App\Models\Category;
 
 class GeneralController extends Controller
 {
@@ -91,7 +92,8 @@ class GeneralController extends Controller
     }
 
     public function showPost($slug) {
-        $post = Post::active()
+        $post = Post::with(['user','admin','category','images','comments'])
+        ->active()
         ->activeUser()
         ->activeCategory()
         ->where('slug',$slug)
@@ -101,6 +103,26 @@ class GeneralController extends Controller
             return apiResponse(404, 'Post Not Found');
         }
         return apiResponse(200, 'this is post', PostResource::make($post));
+
+    }
+
+    public function showPostComments($slug){
+        $post = Post::active()
+            ->activeUser()
+            ->activeCategory()
+            ->whereSlug($slug)
+            ->first();
+
+        if (!$post) {
+            return apiResponse(404, 'Post Not Found');
+        }
+
+        $comments = $post->comments;
+        if (!$comments) {
+            return apiResponse(404, 'Comments Not Found');
+        }
+
+        return apiResponse(200, 'This Post Commetns', new CommentCollection($comments));
 
     }
 }
