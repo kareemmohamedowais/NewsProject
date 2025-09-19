@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\CommentCollection;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\CategoryCollection;
 
 class GeneralController extends Controller
@@ -20,6 +21,10 @@ class GeneralController extends Controller
         ->activeUser()
         ->activeCategory()
         ->active();
+
+        if(request()->query('keyword')){
+            $query->where('title' ,'LIKE', '%' . request()->query('keyword') . '%');
+        }
 
         $posts                  = clone $query->latest()->paginate(4);
         $category_with_posts    = $this->categoryWithPosts();
@@ -125,4 +130,56 @@ class GeneralController extends Controller
         return apiResponse(200, 'This Post Commetns', new CommentCollection($comments));
 
     }
+
+
+public function searchGet($keyword)
+{
+    // validate route param
+    $validator = Validator::make(
+        ['keyword' => $keyword],
+        ['keyword' => ['required', 'string', 'min:2', 'max:100']]
+    );
+
+    if ($validator->fails()) {
+        return apiResponse(422, 'Validation Error', $validator->errors());
+    }
+
+    $posts = Post::with(['user', 'category', 'admin', 'images'])
+        ->where('title', 'LIKE', "%{$keyword}%")
+        ->orWhere('desc', 'LIKE', "%{$keyword}%")
+        ->paginate(5);
+
+    if ($posts->isEmpty()) {
+        return apiResponse(404, 'Posts Not Found');
+    }
+
+    return apiResponse(200, 'Search Results', (new PostCollection($posts))->response()->getData(true));
+}
+
+
+public function searchPost(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'keyword' => ['required', 'string', 'min:2', 'max:100'],
+    ]);
+
+    if ($validator->fails()) {
+        return apiResponse(422, 'Validation Error', $validator->errors());
+    }
+
+    $keyword = $validator->validated()['keyword'];
+
+    $posts = Post::with(['user', 'category', 'admin', 'images'])
+        ->where('title', 'LIKE', "%{$keyword}%")
+        ->orWhere('desc', 'LIKE', "%{$keyword}%")
+        ->paginate(5);
+
+    if ($posts->isEmpty()) {
+        return apiResponse(404, 'Posts Not Found');
+    }
+
+    return apiResponse(200, 'Search Results', (new PostCollection($posts))->response()->getData(true));
+}
+
+
 }

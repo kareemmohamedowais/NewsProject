@@ -21,8 +21,11 @@ use App\Http\Controllers\Api\Setting\SettingController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('posts', [GeneralController::class, 'getPosts']);
+// iعمل البحث للصفحه الرئيسيه يطبق علي الداتا بتاع الصفحه كلها
+// في طريقه تانيه اخليها ترجع علي صفحه لوحده ودي سهله
+Route::get('posts/{Keyword?}', [GeneralController::class, 'getPosts']);
+Route::get('posts/search/{Keyword}', [GeneralController::class, 'searchGet']);
+Route::post('posts/search/', [GeneralController::class, 'searchPost']);
 
 Route::get('posts/show/{slug}', [GeneralController::class, 'showPost']);
 Route::get('posts/comments/{slug}', [GeneralController::class, 'showPostComments']);
@@ -32,3 +35,4 @@ Route::get('settings', [SettingController::class, 'getSettings']);
 
 Route::get('categories', [CategoryController::class, 'getCategories']);
 Route::get('category/{slug}/posts', [CategoryController::class, 'getCategoriesPosts']);
+
