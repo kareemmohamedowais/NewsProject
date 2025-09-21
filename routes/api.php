@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\General\GeneralController;
 use App\Http\Controllers\Api\Setting\SettingController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +22,12 @@ use App\Http\Controllers\Api\Setting\SettingController;
 */
 
 Route::post('auth/login',[LoginController::class,'login']);
+Route::post('auth/register',[RegisterController::class,'register']);
 Route::post('auth/logout',[LoginController::class,'logout'])->middleware('auth:sanctum');
 Route::post('auth/logout/all',[LoginController::class,'logoutAll'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    // return $request->user();
+    return $request->user();
     // return auth()->user();
 });
 // iعمل البحث للصفحه الرئيسيه يطبق علي الداتا بتاع الصفحه كلها
