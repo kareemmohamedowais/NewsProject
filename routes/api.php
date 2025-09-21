@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
 use App\Models\Post;
@@ -19,8 +20,13 @@ use App\Http\Controllers\Api\Setting\SettingController;
 |
 */
 
+Route::post('auth/login',[LoginController::class,'login']);
+Route::post('auth/logout',[LoginController::class,'logout'])->middleware('auth:sanctum');
+Route::post('auth/logout/all',[LoginController::class,'logoutAll'])->middleware('auth:sanctum');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    // return $request->user();
+    // return auth()->user();
 });
 // iعمل البحث للصفحه الرئيسيه يطبق علي الداتا بتاع الصفحه كلها
 // في طريقه تانيه اخليها ترجع علي صفحه لوحده ودي سهله

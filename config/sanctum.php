@@ -46,7 +46,10 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => 60,// مش بتتخزن في الداتا بيز
+    //. الطريقه دي بتتخزن
+    // $token = $user->createToken('user-token',[],now()->addMinutes(60))->plainTextToken;
+
 
     /*
     |--------------------------------------------------------------------------
