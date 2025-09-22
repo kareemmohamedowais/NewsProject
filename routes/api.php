@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\VerivyEmailController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
 use App\Models\Post;
@@ -20,11 +21,20 @@ use App\Http\Controllers\Api\Auth\RegisterController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::post('auth/login',[LoginController::class,'login']);
+//********************* Auth Register Routes ********************************
 Route::post('auth/register',[RegisterController::class,'register']);
-Route::post('auth/logout',[LoginController::class,'logout'])->middleware('auth:sanctum');
-Route::post('auth/logout/all',[LoginController::class,'logoutAll'])->middleware('auth:sanctum');
+//********************* Auth Login  & Logout  Routes ********************************
+Route::controller(LoginController::class)->group(function(){
+    Route::post('auth/login','login');
+    Route::post('auth/logout','logout')->middleware('auth:sanctum');
+    Route::post('auth/logout/all','logoutAll')->middleware('auth:sanctum');
+});
+//********************* Auth VerivyEmail Routes ********************************
+Route::controller(VerivyEmailController::class)->middleware('auth:sanctum')->group(function(){
+    Route::post('auth/email/verify','verifyEmail');
+    Route::get('auth/email/send-again','sendOtpAgain');
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -34,11 +44,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // في طريقه تانيه اخليها ترجع علي صفحه لوحده ودي سهله
 
 //********************* Posts Routes ********************************
-Route::get('posts/{Keyword?}', [GeneralController::class, 'getPosts']);
-Route::get('posts/search/{Keyword}', [GeneralController::class, 'searchGet']);
-Route::post('posts/search/', [GeneralController::class, 'searchPost']);
-Route::get('posts/show/{slug}', [GeneralController::class, 'showPost']);
-Route::get('posts/comments/{slug}', [GeneralController::class, 'showPostComments']);
+Route::controller(GeneralController::class)->prefix('posts')->middleware('auth:sanctum')->group(function(){
+    Route::get('/{Keyword?}',  'getPosts');
+    Route::get('/search/{Keyword}',  'searchGet');
+    Route::post('/search',  'searchPost');
+    Route::get('/show/{slug}',  'showPost');
+    Route::get('/comments/{slug}',  'showPostComments');
+});
+
 
 //********************* Settings Routes ********************************
 Route::get('settings', [SettingController::class, 'getSettings']);

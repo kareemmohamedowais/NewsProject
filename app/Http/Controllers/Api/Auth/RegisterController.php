@@ -9,6 +9,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Notifications\SendOtpVerifyUserEmail;
 
 class RegisterController extends Controller
 {
@@ -32,6 +33,10 @@ class RegisterController extends Controller
             ImageManager::uploadImages($request , null , $user);
         }
         $token = $user->createToken('user-token')->plainTextToken;
+
+        $user->notify(new SendOtpVerifyUserEmail());
+
+
         DB::commit();
         return apiResponse(201 , 'User Created Successfully ' , ['token'=>$token]);
 
