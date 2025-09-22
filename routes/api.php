@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\Password\ForgetPasswordController;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\Password\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\VerivyEmailController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Contact\ContactController;
@@ -33,6 +35,14 @@ Route::controller(LoginController::class)->group(function(){
 Route::controller(VerivyEmailController::class)->middleware('auth:sanctum')->group(function(){
     Route::post('auth/email/verify','verifyEmail');
     Route::get('auth/email/send-again','sendOtpAgain');
+});
+//********************* Auth ForgetPassword Routes ********************************
+Route::controller(ForgetPasswordController::class)->group(function(){
+    Route::post('password/email','sendOtp');
+});
+//********************* Auth ResetPassword Routes ********************************
+Route::controller(ResetPasswordController::class)->group(function(){
+    Route::post('password/reset','resetPassword');
 });
 
 
