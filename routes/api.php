@@ -1,17 +1,21 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\Password\ForgetPasswordController;
-use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\Auth\Password\ResetPasswordController;
-use App\Http\Controllers\Api\Auth\VerivyEmailController;
-use App\Http\Controllers\Api\Category\CategoryController;
-use App\Http\Controllers\Api\Contact\ContactController;
+use App\Http\Controllers\Api\Account\UserSettingController;
+use App\Http\Controllers\Api\RelatedNews\RelatedNewsController;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
+use Predis\Configuration\Option\Prefix;
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Contact\ContactController;
 use App\Http\Controllers\Api\General\GeneralController;
 use App\Http\Controllers\Api\Setting\SettingController;
-use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\VerivyEmailController;
+use App\Http\Controllers\Api\Category\CategoryController;
+use App\Http\Controllers\Api\Auth\Password\ResetPasswordController;
+use App\Http\Controllers\Api\Auth\Password\ForgetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,15 +50,23 @@ Route::controller(ResetPasswordController::class)->group(function(){
 });
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->prefix('account')->group(function(){
+    // Get Auth User Route
+Route::get('/user', function (Request $request) {
+    return UserResource::make(auth()->user());
     // return auth()->user();
 });
+
+//******************************   User Settings Routes          ****************************************//
+    Route::put('user/setting',[UserSettingController::class,'updateSetting']);
+    Route::put('user/password',[UserSettingController::class,'updatePassword']);
+});
+
 // iعمل البحث للصفحه الرئيسيه يطبق علي الداتا بتاع الصفحه كلها
 // في طريقه تانيه اخليها ترجع علي صفحه لوحده ودي سهله
 
 //********************* Posts Routes ********************************
-Route::controller(GeneralController::class)->prefix('posts')->middleware('auth:sanctum')->group(function(){
+Route::controller(GeneralController::class)->prefix('posts')->group(function(){
     Route::get('/{Keyword?}',  'getPosts');
     Route::get('/search/{Keyword}',  'searchGet');
     Route::post('/search',  'searchPost');
@@ -74,5 +86,8 @@ Route::get('category/{slug}/posts', [CategoryController::class, 'getCategoriesPo
 //********************* Contacts Routes ********************************
 
 Route::post('contact/store', [ContactController::class, 'store']);
+//********************* RelatedNews Routes ********************************
+
+Route::get('related-sites', [RelatedNewsController::class, 'RelatedSites']);
 
 
