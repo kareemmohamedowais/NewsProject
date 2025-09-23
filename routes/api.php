@@ -68,7 +68,11 @@ Route::get('/user', function (Request $request) {
 Route::controller(PostController::class)->prefix('posts')->group(function(){
     Route::get('/',                      'getPosts');
     Route::post('/store',                'storeUserPost');
+    Route::post('/update/{post_id}',     'updateUserPost');
     Route::delete('/destroy/{post_id}',  'destroyUserPost');
+
+    Route::get('/comments/{post_id}',    'getPostComments');
+    Route::post('/comments/store' ,       'StoreComment');
 });
 });
 

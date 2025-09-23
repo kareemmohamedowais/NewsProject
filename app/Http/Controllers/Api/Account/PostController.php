@@ -9,8 +9,11 @@ use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommentRequest;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\PostCollection;
+use App\Http\Resources\CommentResource;
+use App\Notifications\NewCommentNotify;
 
 class PostController extends Controller
 {
@@ -72,6 +75,36 @@ class PostController extends Controller
     }
 }
 
+public function updateUserPost(PostRequest $request, $post_id)
+{
+    try {
+        DB::beginTransaction();
+        $user = auth('sanctum')->user();
+        if (!$user) {
+            return apiResponse(401, 'Unauthenticated');
+        }
+        $post = $user->posts()->find($post_id);
+        if (!$post) {
+            return apiResponse(404, 'Post not found');
+        }
+        $post->update($request->except(['images', '_method']));
+        if ($request->hasFile('images')) {
+            ImageManager::deleteImages($post);
+            ImageManager::uploadImages($request, $post);
+        }
+        DB::commit();
+        return apiResponse(200, 'Post updated successfully');
+    } catch (\Throwable $e) {
+        DB::rollBack();
+        Log::error('Error updating user post: ' . $e->getMessage(), [
+            'user_id' => auth('sanctum')->id(),
+            'post_id' => $post_id,
+            'trace'   => $e->getTraceAsString()
+        ]);
+        return apiResponse(500, 'Something went wrong, please try again later');
+    }
+}
+
 public function destroyUserPost($post_id)
 {
     $user = auth()->user();
@@ -110,6 +143,63 @@ public function destroyUserPost($post_id)
         return apiResponse(500, 'Something went wrong, please try again later.');
     }
 }
+
+public function getPostComments($post_id)
+{
+    $user = auth('sanctum')->user();
+    if (!$user) {
+        return apiResponse(401, 'Unauthenticated');
+    }
+    $post = $user->posts()->find($post_id);
+    if (!$post) {
+        return apiResponse(404, 'Post not found');
+    }
+    $comments = $post->comments()->latest()->get();
+    if ($comments->isEmpty()) {
+        return apiResponse(404, 'No comments found for this post');
+    }
+    return apiResponse(200, 'Comments retrieved successfully', CommentResource::collection($comments));
+}
+
+public function storeComment(CommentRequest $request)
+{
+    try {
+        DB::beginTransaction();
+        $user = auth('sanctum')->user();
+        if (!$user) {
+            return apiResponse(401, 'Unauthenticated');
+        }
+        $post = Post::find($request->post_id);
+        if (!$post) {
+            return apiResponse(404, 'Post not found');
+        }
+        $comment = $post->comments()->create([
+            'user_id'   => $user->id,
+            'comment'   => $request->comment,
+            'ip_address'=> $request->ip(),
+        ]);
+        if (!$comment) {
+            DB::rollBack();
+            return apiResponse(400, 'Failed to create comment, please try again');
+        }
+        // لو الكومنت مش من صاحب البوست → ابعت نوتيفيكيشن
+        if ($user->id !== $post->user_id) {
+            $post->user->notify(new NewCommentNotify($comment, $post));
+        }
+        DB::commit();
+        return apiResponse(201, 'Comment created successfully');
+    } catch (\Throwable $e) {
+        DB::rollBack();
+        Log::error('Error creating comment: ' . $e->getMessage(), [
+            'user_id' => auth('sanctum')->id(),
+            'post_id' => $request->post_id,
+            'trace'   => $e->getTraceAsString()
+        ]);
+        return apiResponse(500, 'Something went wrong, please try again later');
+    }
+}
+
+
 
 
 }
