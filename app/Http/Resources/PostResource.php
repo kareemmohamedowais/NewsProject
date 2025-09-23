@@ -37,7 +37,7 @@ class PostResource extends JsonResource
         if($request->is('api/posts/show/*')){
             $data['category']=CategoryResource::make($this->category);
             // $data['comments']=new CommentCollection($this->comments);
-            // هعمل للكومن ايند بوينت خاصه بيها 
+            // هعمل للكومن ايند بوينت خاصه بيها
             $data['comment_able']=$this->comment_able == 1 ? 'active' : 'inactive';
             $data['desc']=$this->desc;
         }

@@ -15,6 +15,7 @@ class CategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         $data = [
+            'category-id'=>$this->id,
             'category-name'=>$this->name,
             'category-slug'=>$this->slug,
             'category-status'=>$this->status(),

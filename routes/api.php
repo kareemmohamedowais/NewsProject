@@ -1,19 +1,20 @@
 <?php
 
-use App\Http\Controllers\Api\Account\UserSettingController;
-use App\Http\Controllers\Api\RelatedNews\RelatedNewsController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 use Predis\Configuration\Option\Prefix;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Account\PostController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Contact\ContactController;
 use App\Http\Controllers\Api\General\GeneralController;
 use App\Http\Controllers\Api\Setting\SettingController;
 use App\Http\Controllers\Api\Auth\VerivyEmailController;
 use App\Http\Controllers\Api\Category\CategoryController;
+use App\Http\Controllers\Api\Account\UserSettingController;
+use App\Http\Controllers\Api\RelatedNews\RelatedNewsController;
 use App\Http\Controllers\Api\Auth\Password\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\Password\ForgetPasswordController;
 
@@ -44,6 +45,7 @@ Route::controller(VerivyEmailController::class)->middleware('auth:sanctum')->gro
 Route::controller(ForgetPasswordController::class)->group(function(){
     Route::post('password/email','sendOtp');
 });
+
 //********************* Auth ResetPassword Routes ********************************
 Route::controller(ResetPasswordController::class)->group(function(){
     Route::post('password/reset','resetPassword');
@@ -57,9 +59,17 @@ Route::get('/user', function (Request $request) {
     // return auth()->user();
 });
 
-//******************************   User Settings Routes          ****************************************//
+//******************************   User Settings Routes   ****************************************//
     Route::put('user/setting',[UserSettingController::class,'updateSetting']);
     Route::put('user/password',[UserSettingController::class,'updatePassword']);
+
+//******************************   User Posts Routes   ****************************************//
+
+Route::controller(PostController::class)->prefix('posts')->group(function(){
+    Route::get('/',                      'getPosts');
+    Route::post('/store',                'storeUserPost');
+    Route::delete('/destroy/{post_id}',  'destroyUserPost');
+});
 });
 
 // iعمل البحث للصفحه الرئيسيه يطبق علي الداتا بتاع الصفحه كلها
