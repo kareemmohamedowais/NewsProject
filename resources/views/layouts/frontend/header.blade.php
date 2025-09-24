@@ -111,7 +111,7 @@
                                         <div class="dropdown-item d-flex justify-content-between align-items-center">
                                         <p>{{ substr($notification->data['post_title'], 0, 5) ?? '' }}</p>
                                         <span>{{ $notification->data['comment'] ?? '' }}</span>
-                                        <a href="{{ $notification->data['link'] ?? '' }}?notify={{ $notification->id }}"><i
+                                        <a href="{{ route('frontend.post.show',$notification->data['post_slug']) }}?notify={{ $notification->id }}"><i
                                                 class="fa fa-eye"></i></a>
                                     </div>
                                     </div>

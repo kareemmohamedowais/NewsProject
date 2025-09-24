@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Setting\SettingController;
 use App\Http\Controllers\Api\Auth\VerivyEmailController;
 use App\Http\Controllers\Api\Category\CategoryController;
 use App\Http\Controllers\Api\Account\UserSettingController;
+use App\Http\Controllers\Api\Account\NotificationController;
 use App\Http\Controllers\Api\RelatedNews\RelatedNewsController;
 use App\Http\Controllers\Api\Auth\Password\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\Password\ForgetPasswordController;
@@ -74,7 +75,14 @@ Route::controller(PostController::class)->prefix('posts')->group(function(){
     Route::get('/comments/{post_id}',    'getPostComments');
     Route::post('/comments/store' ,       'StoreComment');
 });
+//******************************   Notifications Routes   ****************************************//
+
+    Route::get('notifications' , [NotificationController::class , 'getNotifications']);
+    Route::get('notifications/read/{id}' , [NotificationController::class , 'readNotifications']);
+
 });
+
+
 
 // iعمل البحث للصفحه الرئيسيه يطبق علي الداتا بتاع الصفحه كلها
 // في طريقه تانيه اخليها ترجع علي صفحه لوحده ودي سهله
@@ -84,7 +92,7 @@ Route::controller(GeneralController::class)->prefix('posts')->group(function(){
     Route::get('/{Keyword?}',  'getPosts');
     Route::get('/search/{Keyword}',  'searchGet');
     Route::post('/search',  'searchPost');
-    Route::get('/show/{slug}',  'showPost');
+    Route::get('/show/{slug}',  'showPost')->name('api.post.show');
     Route::get('/comments/{slug}',  'showPostComments');
 });
 

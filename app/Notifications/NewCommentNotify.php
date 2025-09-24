@@ -58,7 +58,7 @@ class NewCommentNotify extends Notification
             'post_title' =>$this->post->title,
             'post_slug' =>$this->post->slug,
             'comment'=>$this->comment->comment,
-            'link'=>route('frontend.post.show',$this->post->slug),
+            // 'link'=>route('frontend.post.show',$this->post->slug),
         ];
     }
     public function toBroadcast(object $notifiable): array
@@ -69,7 +69,7 @@ class NewCommentNotify extends Notification
             'post_title' =>$this->post->title,
             'post_slug' =>$this->post->slug,
             'comment'=>$this->comment->comment,
-            'link'=>route('frontend.post.show',$this->post->slug),
+            // 'link'=>route('frontend.post.show',$this->post->slug),
         ];
     }
     // public function broadcastType(): string

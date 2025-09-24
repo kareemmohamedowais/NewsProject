@@ -56,9 +56,11 @@
             @auth
                 role='user';
                 user_id = "{{ auth()->user()->id }}";
+                showPostRoute  = "{{ route('frontend.post.show' , ':slug') }}";
+
             @endauth
         </script>
-    <script src="{{ asset('build/assets/app-C0aLw_G_.js') }}"></script>
+    <script src="{{ asset('build/assets/app-DLcmA25h.js') }}"></script>
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

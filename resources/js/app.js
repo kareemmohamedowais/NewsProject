@@ -2,11 +2,12 @@ import './bootstrap';
 if (role == "user") {
 window.Echo.private(`users.${user_id}`)
     .notification((event)=>{
+        let link  = showPostRoute.replace(':slug' , event.post_slug) +'?notify='+event.id;
         $('#pusherNotify').prepend(`
             <div class="dropdown-item d-flex justify-content-between align-items-center">
                                         <p>${event.post_title.substring(0,9)}</p>
                                         <span>${event.comment}</span>
-                                        <a href="${event.link}?notify=${event.id}"><i
+                                        <a href="${link}?notify=${event.id}"><i
                                         class="fa fa-eye"></i></a>
             </div>
             `);
