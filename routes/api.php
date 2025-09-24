@@ -53,7 +53,7 @@ Route::controller(ResetPasswordController::class)->group(function(){
 });
 
 
-Route::middleware('auth:sanctum')->prefix('account')->group(function(){
+Route::middleware(['auth:sanctum','check-user-status'])->prefix('account')->group(function(){
     // Get Auth User Route
 Route::get('/user', function (Request $request) {
     return UserResource::make(auth()->user());
@@ -76,9 +76,16 @@ Route::controller(PostController::class)->prefix('posts')->group(function(){
     Route::post('/comments/store' ,       'StoreComment');
 });
 //******************************   Notifications Routes   ****************************************//
-
+    // Get all notifications + unread
     Route::get('notifications' , [NotificationController::class , 'getNotifications']);
+    // Mark single notification as read
     Route::get('notifications/read/{id}' , [NotificationController::class , 'readNotifications']);
+    // Mark all notifications as read
+    Route::get('notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    // Delete single notification
+    Route::delete('notifications/{id}', [NotificationController::class, 'deleteNotification']);
+    // Delete all notifications
+    Route::delete('notifications', [NotificationController::class, 'deleteAllNotifications']);
 
 });
 
