@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
@@ -15,16 +16,23 @@ class LoginController extends Controller
             'password'=>['required','max:50']
         ]);
 
+        if(RateLimiter::tooManyAttempts($request->ip() , 2)){
+            $time = RateLimiter::availableIn($request->ip());
+            return apiResponse(429 , 'Tow many attempts , try after : ' . $time . ' seconds');
+        }
+        RateLimiter::increment($request->ip());
+        $remain  = RateLimiter::remaining($request->ip() , 2);
+
         $user = User::whereEmail($request->email)->first();
         if(!$user){
-            return apiResponse(401,'credintials doesnt match');
+            return apiResponse(401,'Credensials dose not match');
         }
         if ($user && Hash::check($request->password ,$user->password)) {
         $token = $user->createToken('user-token',[],now()->addMinutes(60))->plainTextToken;
         // $token = $user->createToken('user_token')->plainTextToken;
         return apiResponse(200 , 'User Loged Successfully' , ['token'=>$token]);
         }
-        return apiResponse(401 , 'Credensials dose not match p');
+        return apiResponse(401 , 'Credensials dose not match', ['remeinig'=>$remain]);
     }
     public function logout(){
         $user = auth('sanctum')->user();

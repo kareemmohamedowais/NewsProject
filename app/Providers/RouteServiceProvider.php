@@ -24,9 +24,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        $this->configureRateLimiter();
 
         $this->routes(function () {
             Route::middleware('api')
@@ -37,6 +35,44 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
             Route::middleware('web')
                 ->group(base_path('routes/dashboard.php'));
+        });
+    }
+
+    protected function configureRateLimiter()
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(20)->by($request->user()?->id ?: $request->ip())->response(function () {
+                return apiResponse(429, 'Try After Minute');
+            });
+        });
+
+        RateLimiter::for('contact', function (Request $request) {
+            return Limit::perMinute(2)->by($request->ip())->response(function () {
+                return apiResponse(429, 'Try After Minute');
+            });
+        });
+        RateLimiter::for('login', function (Request $request) {
+            return Limit::perMinute(2)->by($request->ip())->response(function () {
+                return apiResponse(429, 'Try After Minute');
+            });
+        });
+        RateLimiter::for('register', function (Request $request) {
+            return Limit::perMinute(2)->by($request->ip())->response(function () {
+                return apiResponse(429, 'Try After Minute');
+            });
+        });
+        RateLimiter::for('comments', function (Request $request) {
+            return Limit::perMinute(3)->by($request->ip())->response(function () {
+                return apiResponse(429, 'Try After Minute');
+            });
+        });
+
+
+        //  web middleware throttle
+        RateLimiter::for('test', function (Request $request) {
+            return Limit::perMinute(2)->by($request->ip())->response(function () {
+                abort(429);
+            });
         });
     }
 }

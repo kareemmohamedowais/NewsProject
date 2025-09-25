@@ -30,7 +30,7 @@ use App\Http\Controllers\Api\Auth\Password\ForgetPasswordController;
 |
 */
 //********************* Auth Register Routes ********************************
-Route::post('auth/register',[RegisterController::class,'register']);
+Route::post('auth/register',[RegisterController::class,'register'])->middleware('throttle:register');
 //********************* Auth Login  & Logout  Routes ********************************
 Route::controller(LoginController::class)->group(function(){
     Route::post('auth/login','login');
@@ -73,7 +73,7 @@ Route::controller(PostController::class)->prefix('posts')->group(function(){
     Route::delete('/destroy/{post_id}',  'destroyUserPost');
 
     Route::get('/comments/{post_id}',    'getPostComments');
-    Route::post('/comments/store' ,       'StoreComment');
+    Route::post('/comments/store' ,       'StoreComment')->middleware('throttle:comments');
 });
 //******************************   Notifications Routes   ****************************************//
     // Get all notifications + unread
@@ -114,7 +114,7 @@ Route::get('category/{slug}/posts', [CategoryController::class, 'getCategoriesPo
 
 //********************* Contacts Routes ********************************
 
-Route::post('contact/store', [ContactController::class, 'store']);
+Route::post('contact/store', [ContactController::class, 'store'])->middleware('throttle:contact');
 //********************* RelatedNews Routes ********************************
 
 Route::get('related-sites', [RelatedNewsController::class, 'RelatedSites']);
