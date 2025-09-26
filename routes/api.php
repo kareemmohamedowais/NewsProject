@@ -53,7 +53,7 @@ Route::controller(ResetPasswordController::class)->group(function(){
 });
 
 
-Route::middleware(['auth:sanctum','check-user-status'])->prefix('account')->group(function(){
+Route::middleware(['auth:sanctum','check-user-status','checkEmailVerify'])->prefix('account')->group(function(){
     // Get Auth User Route
 Route::get('/user', function (Request $request) {
     return UserResource::make(auth()->user());
