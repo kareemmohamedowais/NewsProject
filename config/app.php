@@ -185,6 +185,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+            'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

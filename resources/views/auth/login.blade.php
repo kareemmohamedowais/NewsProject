@@ -50,6 +50,17 @@
                                 </div>
                             </div>
                         </div>
+                         <div class="row d-flex justify-content-center" style="margin-left: 70px">
+                                {!! \Anhskohbo\NoCaptcha\Facades\NoCaptcha::display() !!}
+
+                            </div>
+                            <div class="row d-flex justify-content-center" style="margin-left: 70px">
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="help-block">
+                                        <strong class="text-danger">{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                                @endif
+                            </div><br>
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
@@ -72,3 +83,7 @@
 </div>
 <br><br>
 @endsection
+
+@push('js')
+    {!! \Anhskohbo\NoCaptcha\Facades\NoCaptcha::renderJs() !!}
+@endpush

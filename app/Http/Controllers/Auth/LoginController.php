@@ -40,6 +40,18 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'g-recaptcha-response' => 'required',
+        ],[
+            'g-recaptcha-response'=>[
+                'required'=>'Please verify that you are not a robot',
+            ]
+        ]);
+    }
     protected function authenticated(Request $request, $user)
     {
         Session::flash('success','login success');
@@ -55,7 +67,7 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
 
-        
+
         if ($response = $this->loggedOut($request)) {
             return $response;
         }
