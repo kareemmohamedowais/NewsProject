@@ -1,16 +1,18 @@
 <?php
 
-use App\Http\Controllers\Frontend\Dashboard\NotificationController;
-use App\Http\Controllers\Frontend\Dashboard\SettingController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController;
 use App\Http\Controllers\Frontend\SearchController;
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Frontend\CategoryController;
 use App\Http\Controllers\Frontend\NewsSubscriberController;
 use App\Http\Controllers\Frontend\Dashboard\ProfileController;
+use App\Http\Controllers\Frontend\Dashboard\SettingController;
+use App\Http\Controllers\Frontend\Dashboard\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +71,7 @@ Route::group([
         //setting routes
         Route::prefix('setting')->controller(SettingController::class)->group(function(){
             Route::get('','index')->name('setting');
-            Route::post('','update')->name('setting.update');
+            Route::patch('','update')->name('setting.update');
             Route::post('/changePassword','changePassword')->name('setting.changePassword');
         });
         //notivications route
@@ -85,6 +87,11 @@ Route::group([
     })->name('wait');
 
 });
+
+Route::get('auth/{provider}/redirect' , [SocialLoginController::class , 'redirect'])
+    ->name('auth.socilate.redirect');
+Route::get('auth/{provider}/callback' , [SocialLoginController::class , 'callback'])
+    ->name('auth.socilate.callback');
 
 
 

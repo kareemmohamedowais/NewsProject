@@ -29,7 +29,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'city',
         'street',
         'phone',
-        'email_verified_at'
+        'email_verified_at',
+        'provider',
+        'provider_id',
+        'provider_token',
     ];
 
     /**
@@ -51,15 +54,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function posts(){
-        return $this->hasMany(Post::class,'user_id');
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id');
     }
     public function receivesBroadcastNotificationsOn(): string
     {
-        return 'users.'.$this->id;
+        return 'users.' . $this->id;
     }
-        public function status()
+    public function status()
     {
-        return $this->status == 1 ?'Active':'Not Active';
+        return $this->status == 1 ? 'Active' : 'Not Active';
     }
 }

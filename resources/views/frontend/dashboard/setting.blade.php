@@ -44,6 +44,7 @@
             <form action="{{ route('frontend.dashboard.setting.update') }}" method="post" class="settings-form"
                 enctype="multipart/form-data">
                 @csrf
+                @method('patch')
                 <div class="form-group">
                     <label for="username">Name:</label>
                     <input name="name" type="text" id="username" value="{{ $user->name }}" />
@@ -112,6 +113,7 @@
             <!-- Form to change the password -->
             <form action="{{ route('frontend.dashboard.setting.changePassword') }}" method="post" class="change-password-form">
                 @csrf
+
                 <h2>Change Password</h2>
                 <div class="form-group">
                     <label for="current-password">Current Password:</label>
